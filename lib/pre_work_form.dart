@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class PreWorkFormPage extends StatefulWidget {
   @override
@@ -26,6 +30,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
   int numberOfLayers = 0;
   String repairDimensions = '';
   String applicationType = 'on-line';
+
+  File? _pickedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -319,6 +325,38 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                   return null;
                 },
               ),
+              SizedBox(height: 16),
+
+              // Image picker
+              Text(
+                'Images Before the Job',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+
+              SizedBox(height: 16),
+
+              _pickedImage == null
+                  ? ElevatedButton(
+                onPressed: () async {
+                  final pickedImage = await ImagePicker().getImage(
+                    source: ImageSource.gallery, // You can change this to ImageSource.camera for the camera.
+                  );
+
+                  if (pickedImage != null) {
+                    setState(() {
+                      _pickedImage = File(pickedImage.path);
+                    });
+                  }
+                },
+                child: Text('Pick an Image'),
+              )
+                  : Image.file(
+                _pickedImage!,
+                height: 200,
+                width: 200,
+                fit: BoxFit.cover,
+              ),
+
               SizedBox(height: 16),
 
               // Save and Cancel buttons
