@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:jcr_app/jcr_form.dart';
+import 'pre_work_form.dart';
 
 void main() {
-  runApp(JCRApp());
+  runApp(MyApp());
 }
 
-class JCRApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('JCR App'),
-        ),
-        body: JCRForm(),
+      title: 'JCR App',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
       ),
+      home: PreWorkFormPage(),
     );
   }
 }
