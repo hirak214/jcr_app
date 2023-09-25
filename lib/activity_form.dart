@@ -428,10 +428,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // The form is valid, you can handle save action here
-                        // You can access form values using the variables defined above
-                      }
+                      // Handle save action here without validation
+                      // You can access form values using the variables defined above
                     },
                     child: Text('Save'),
                   ),
