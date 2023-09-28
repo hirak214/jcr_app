@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pre_work_form.dart';
 import 'activity_form.dart';
+import 'dashboard.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       // home: PreWorkFormPage(),
-      home: ActivityFormPage(),
+      home: Dashboard(),
     );
   }
 }
