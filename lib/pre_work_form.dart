@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class PreWorkFormPage extends StatefulWidget {
   @override
   _PreWorkFormPageState createState() => _PreWorkFormPageState();
@@ -13,10 +12,9 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController poReferenceController = TextEditingController();
-  TextEditingController poDateController = TextEditingController();
+  DateTime? selectedPoDate; // New DateTime variable for PO Date
 
   String jcrRefNo = 'HKSandeep';
-
   String customerName = '';
   String location = '';
   String department = '';
@@ -104,7 +102,23 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                   ),
                   Expanded(
                     child: TextFormField(
-                      controller: poDateController,
+                      readOnly: true,
+                      onTap: () async {
+                        final currentDate = DateTime.now();
+                        final selectedDate = await showDatePicker(
+                          context: context,
+                          initialDate: selectedPoDate ?? currentDate,
+                          firstDate: currentDate.subtract(Duration(days: 365)),
+                          lastDate: currentDate.add(Duration(days: 365)),
+                        );
+
+                        if (selectedDate != null) {
+                          setState(() {
+                            selectedPoDate = selectedDate;
+                            poReferenceController.text = selectedDate.toLocal().toString().split(' ')[0];
+                          });
+                        }
+                      },
                       decoration: InputDecoration(labelText: 'PO Date'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -133,94 +147,119 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                 'Customer Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    customerName = value;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Customer name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Customer Name';
-                  }
-                  return null;
-                },
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          customerName = value;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Customer name'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Customer Name';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          location = value;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Location'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Location';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    location = value;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Location'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Location';
-                  }
-                  return null;
-                },
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          department = value;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Department'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Department';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          jobLocationAndId = value;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Job Location & ID'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Job Location & ID';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    department = value;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Department'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Department';
-                  }
-                  return null;
-                },
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          contactPerson = value;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Contact person'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Contact Person';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          mobileNumber = value;
+                        });
+                      },
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(labelText: 'Mobile number'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Mobile Number';
+                        }
+                        if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                          return 'Please enter a valid 10-digit Mobile Number';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    jobLocationAndId = value;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Job Location & ID'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Job Location & ID';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    contactPerson = value;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Contact person'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Contact Person';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    mobileNumber = value;
-                  });
-                },
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(labelText: 'Mobile number'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Mobile Number';
-                  }
-                  if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
-                    return 'Please enter a valid 10-digit Mobile Number';
-                  }
-                  return null;
-                },
-              ),
+
               SizedBox(height: 16),
 
               // Defect & design details
@@ -228,120 +267,144 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                 'Defect & Design Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              DropdownButtonFormField<String>(
-                value: defectType,
-                items: ['Type-A', 'Type-B', 'Type-C', 'Type-D']
-                    .map<DropdownMenuItem<String>>(
-                      (String value) => DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      value: defectType,
+                      items: ['Type-A', 'Type-B', 'Type-C', 'Type-D']
+                          .map<DropdownMenuItem<String>>(
+                            (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          defectType = value!;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Defect Type'),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select Defect Type';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    defectType = value!;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Defect Type'),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select Defect Type';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    defectDetails = value;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Defect Details'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Defect Details';
-                  }
-                  return null;
-                },
-              ),
-              DropdownButtonFormField<String>(
-                value: outputSheet,
-                items: ['yes', 'no']
-                    .map<DropdownMenuItem<String>>(
-                      (String value) => DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          defectDetails = value;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Defect Details'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Defect Details';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    outputSheet = value!;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Output sheet'),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select Output sheet';
-                  }
-                  return null;
-                },
+                ],
               ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    numberOfLayers = int.tryParse(value) ?? 0;
-                  });
-                },
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Number of layers'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Number of layers';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid numerical value';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    repairDimensions = value;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Repair dimensions'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Repair dimensions';
-                  }
-                  return null;
-                },
-              ),
-              DropdownButtonFormField<String>(
-                value: applicationType,
-                items: ['on-line', 'off-line']
-                    .map<DropdownMenuItem<String>>(
-                      (String value) => DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      value: outputSheet,
+                      items: ['yes', 'no']
+                          .map<DropdownMenuItem<String>>(
+                            (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          outputSheet = value!;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Output sheet'),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select Output sheet';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    applicationType = value!;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Application type'),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select Application type';
-                  }
-                  return null;
-                },
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          numberOfLayers = int.tryParse(value) ?? 0;
+                        });
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(labelText: 'Number of layers'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Number of layers';
+                        }
+                        if (int.tryParse(value) == null) {
+                          return 'Please enter a valid numerical value';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          repairDimensions = value;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Repair dimensions'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Repair dimensions';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      value: applicationType,
+                      items: ['on-line', 'off-line']
+                          .map<DropdownMenuItem<String>>(
+                            (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          applicationType = value!;
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'Application type'),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select Application type';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 16),
 
@@ -387,7 +450,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         // Handle save action here
                         final formData = {
                           'poReference': poReferenceController.text,
-                          'poDate': poDateController.text,
+                          'poDate': selectedPoDate?.toLocal().toString().split(' ')[0] ?? '',
                           'jcrRefNo': jcrRefNo,
                           'customerName': customerName,
                           'location': location,
@@ -414,40 +477,39 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                     },
                     child: Text('Save'),
                   ),
-        ElevatedButton(
-          onPressed: () {
-            // Clear form inputs and reset variables
-            _formKey.currentState!.reset();
-            setState(() {
-              // Clear text controllers
-              poReferenceController.clear();
-              poDateController.clear();
+                  ElevatedButton(
+                    onPressed: () {
+                      // Clear form inputs and reset variables
+                      _formKey.currentState!.reset();
+                      setState(() {
+                        // Clear text controllers
+                        poReferenceController.clear();
 
-              // Reset other variables
-              jcrRefNo = 'HKSandeep';
-              customerName = '';
-              location = '';
-              department = '';
-              jobLocationAndId = '';
-              contactPerson = '';
-              mobileNumber = '';
+                        // Reset other variables
+                        jcrRefNo = 'HKSandeep';
+                        customerName = '';
+                        location = '';
+                        department = '';
+                        jobLocationAndId = '';
+                        contactPerson = '';
+                        mobileNumber = '';
 
-              defectType = 'Type-A';
-              defectDetails = '';
-              outputSheet = 'yes';
-              numberOfLayers = 0;
-              repairDimensions = '';
-              applicationType = 'on-line';
+                        defectType = 'Type-A';
+                        defectDetails = '';
+                        outputSheet = 'yes';
+                        numberOfLayers = 0;
+                        repairDimensions = '';
+                        applicationType = 'on-line';
 
-              // Clear the picked image
-              _pickedImage = null;
-            });
+                        // Clear the picked image
+                        _pickedImage = null;
+                      });
 
-            // Close the form and return to the previous screen (dashboard)
-            Navigator.pop(context);
-          },
-          child: Text('Cancel'),
-      ),
+                      // Close the form and return to the previous screen (dashboard)
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancel'),
+                  ),
                 ],
               ),
             ],
@@ -463,5 +525,4 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
 
     file.writeAsStringSync(jsonString);
   }
-
 }
