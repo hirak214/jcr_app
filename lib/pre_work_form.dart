@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 class PreWorkFormPage extends StatefulWidget {
   @override
@@ -102,6 +104,10 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                   ),
                   Expanded(
                     child: TextFormField(
+                      controller: TextEditingController(
+                        text: selectedPoDate?.toLocal().toString().split(
+                            ' ')[0] ?? '',
+                      ),
                       readOnly: true,
                       onTap: () async {
                         final currentDate = DateTime.now();
@@ -115,7 +121,6 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         if (selectedDate != null) {
                           setState(() {
                             selectedPoDate = selectedDate;
-                            poReferenceController.text = selectedDate.toLocal().toString().split(' ')[0];
                           });
                         }
                       },
@@ -208,7 +213,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                           jobLocationAndId = value;
                         });
                       },
-                      decoration: InputDecoration(labelText: 'Job Location & ID'),
+                      decoration: InputDecoration(
+                          labelText: 'Job Location & ID'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter Job Location & ID';
@@ -274,10 +280,11 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                       value: defectType,
                       items: ['Type-A', 'Type-B', 'Type-C', 'Type-D']
                           .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
+                            (String value) =>
+                            DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
                       )
                           .toList(),
                       onChanged: (value) {
@@ -319,10 +326,11 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                       value: outputSheet,
                       items: ['yes', 'no']
                           .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
+                            (String value) =>
+                            DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
                       )
                           .toList(),
                       onChanged: (value) {
@@ -347,7 +355,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         });
                       },
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: 'Number of layers'),
+                      decoration: InputDecoration(
+                          labelText: 'Number of layers'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter Number of layers';
@@ -370,7 +379,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                           repairDimensions = value;
                         });
                       },
-                      decoration: InputDecoration(labelText: 'Repair dimensions'),
+                      decoration: InputDecoration(
+                          labelText: 'Repair dimensions'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter Repair dimensions';
@@ -384,10 +394,11 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                       value: applicationType,
                       items: ['on-line', 'off-line']
                           .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
+                            (String value) =>
+                            DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
                       )
                           .toList(),
                       onChanged: (value) {
@@ -395,7 +406,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                           applicationType = value!;
                         });
                       },
-                      decoration: InputDecoration(labelText: 'Application type'),
+                      decoration: InputDecoration(
+                          labelText: 'Application type'),
                       validator: (value) {
                         if (value == null) {
                           return 'Please select Application type';
@@ -420,7 +432,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                   ? ElevatedButton(
                 onPressed: () async {
                   final pickedImage = await ImagePicker().getImage(
-                    source: ImageSource.gallery, // You can change this to ImageSource.camera for the camera.
+                    source: ImageSource
+                        .gallery, // You can change this to ImageSource.camera for the camera.
                   );
 
                   if (pickedImage != null) {
@@ -450,7 +463,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         // Handle save action here
                         final formData = {
                           'poReference': poReferenceController.text,
-                          'poDate': selectedPoDate?.toLocal().toString().split(' ')[0] ?? '',
+                          'poDate': selectedPoDate?.toLocal().toString().split(
+                              ' ')[0] ?? '',
                           'jcrRefNo': jcrRefNo,
                           'customerName': customerName,
                           'location': location,
@@ -465,7 +479,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                           'repairDimensions': repairDimensions,
                           'applicationType': applicationType,
                         };
-
+                        print('Form data: $formData');
                         saveToJsonFile(formData);
                         // Optionally, show a confirmation message
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -519,10 +533,35 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
     );
   }
 
-  void saveToJsonFile(Map<String, dynamic> formData) {
+  void saveToJsonFile(Map<String, dynamic> formData) async {
     final jsonString = json.encode(formData);
-    final file = File('form_data.json'); // Change the file path as needed
+    final directory = await getExternalStorageDirectory(); // or getApplicationDocumentsDirectory()
 
-    file.writeAsStringSync(jsonString);
+    if (directory == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Unable to access storage directory.'),
+        ),
+      );
+      return;
+    }
+
+    final filePath = '${directory.path}/form_data.json';
+    print('Saving form data to $filePath');
+    try {
+      final file = File(filePath);
+      await file.writeAsString(jsonString);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Form data saved successfully.'),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to save form data: $e'),
+        ),
+      );
+    }
   }
 }
