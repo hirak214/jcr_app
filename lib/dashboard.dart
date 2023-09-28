@@ -49,6 +49,14 @@ class Dashboard extends StatelessWidget {
           Expanded(
             child: OngoingJobsWidget(),
           ),
+          // Padding added here
+          Padding(
+            padding: EdgeInsets.only(top: 16.0), // Adjust the top padding as needed
+            child: Text(
+              'Completed Jobs',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
           // Completed Jobs
           Expanded(
             child: ListView(
@@ -193,7 +201,13 @@ class _OngoingJobsWidgetState extends State<OngoingJobsWidget> {
         return ListTile(
           title: Text('$poReference (Ongoing)'),
           onTap: () {
-            // Navigate to details of the selected ongoing job
+            // Navigate to ActivityFormPage without passing formData
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ActivityFormPage(),
+              ),
+            );
           },
         );
       }).toList(),
