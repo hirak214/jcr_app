@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'pre_work_form.dart';
 import 'activity_form.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -140,9 +143,43 @@ class _OngoingJobsWidgetState extends State<OngoingJobsWidget> {
     loadOngoingJobs();
   }
 
+// Function to load ongoing job data from form_data.json file
   Future<void> loadOngoingJobs() async {
-    // Load ongoing job data from the form_data.json file
-    // (Same code as provided in the previous response)
+    try {
+      final directory = await getExternalStorageDirectory(); // or getApplicationDocumentsDirectory()
+      if (directory == null) {
+        return; // Handle error, unable to access storage directory
+      }
+
+      final filePath = '${directory.path}/form_data.json';
+      final file = File(filePath);
+
+      if (await file.exists()) {
+        final jsonData = await file.readAsString();
+        final List<dynamic> formDataList = json.decode(jsonData);
+
+        // Process the formDataList and filter ongoing jobs
+        ongoingJobs = formDataList
+            .where((formData) {
+          // You can add a condition to check if this is an ongoing job
+          // For example, if formData['status'] == 'ongoing'
+          return true;
+        })
+            .map((formData) {
+          final poReference = formData['poReference'];
+          return OngoingJob(
+            poReference: poReference,
+            formData: formData,
+          );
+        })
+            .toList();
+
+        // Refresh the widget to reflect the loaded data
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error loading ongoing jobs: $e');
+    }
   }
 
   @override
