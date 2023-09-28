@@ -557,10 +557,23 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
     }
 
     final filePath = '${directory.path}/form_data.json';
-    print('Saving form data to $filePath');
+    print('Appending form data to $filePath');
     try {
       final file = File(filePath);
-      await file.writeAsString(jsonString);
+
+      // Read existing data from the file, if any
+      List<dynamic> existingData = [];
+      if (await file.exists()) {
+        final existingString = await file.readAsString();
+        existingData = json.decode(existingString);
+      }
+
+      // Append the new form data to the existing data
+      existingData.add(formData);
+
+      // Write the updated data back to the file
+      await file.writeAsString(json.encode(existingData));
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Form data saved successfully.'),
