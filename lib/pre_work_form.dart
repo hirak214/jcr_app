@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -51,53 +51,71 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                 'Installer Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              TextFormField(
-                readOnly: true,
-                initialValue: 'S Bharmappa',
-                decoration: InputDecoration(
-                  labelText: 'Installer Name',
-                  enabled: false,
-                  labelStyle: TextStyle(color: Colors.grey),
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      readOnly: true,
+                      initialValue: 'S Bharmappa',
+                      decoration: InputDecoration(
+                        labelText: 'Installer Name',
+                        enabled: false,
+                        labelStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      readOnly: true,
+                      initialValue: 'HK1210',
+                      decoration: InputDecoration(
+                        labelText: 'Certificate ID',
+                        enabled: false,
+                        labelStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      readOnly: true,
+                      initialValue: 'Sandeep D',
+                      decoration: InputDecoration(
+                        labelText: 'Supervisor/TSE',
+                        enabled: false,
+                        labelStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                readOnly: true,
-                initialValue: 'HK1210',
-                decoration: InputDecoration(
-                  labelText: 'Certificate ID',
-                  enabled: false,
-                  labelStyle: TextStyle(color: Colors.grey),
-                ),
-              ),
-              TextFormField(
-                readOnly: true,
-                initialValue: 'Sandeep D',
-                decoration: InputDecoration(
-                  labelText: 'Supervisor/TSE',
-                  enabled: false,
-                  labelStyle: TextStyle(color: Colors.grey),
-                ),
-              ),
-              TextFormField(
-                controller: poReferenceController,
-                decoration: InputDecoration(labelText: 'PO Reference'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter PO Reference';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: poDateController,
-                decoration: InputDecoration(labelText: 'PO Date'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter PO Date';
-                  }
-                  // You can add additional date format validation here
-                  return null;
-                },
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: poReferenceController,
+                      decoration: InputDecoration(labelText: 'PO Reference'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter PO Reference';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: poDateController,
+                      decoration: InputDecoration(labelText: 'PO Date'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter PO Date';
+                        }
+                        // You can add additional date format validation here
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
               TextFormField(
                 readOnly: true,
@@ -367,36 +385,69 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // Handle save action here
-                        // You can access form values using the variables defined above
+                        final formData = {
+                          'poReference': poReferenceController.text,
+                          'poDate': poDateController.text,
+                          'jcrRefNo': jcrRefNo,
+                          'customerName': customerName,
+                          'location': location,
+                          'department': department,
+                          'jobLocationAndId': jobLocationAndId,
+                          'contactPerson': contactPerson,
+                          'mobileNumber': mobileNumber,
+                          'defectType': defectType,
+                          'defectDetails': defectDetails,
+                          'outputSheet': outputSheet,
+                          'numberOfLayers': numberOfLayers,
+                          'repairDimensions': repairDimensions,
+                          'applicationType': applicationType,
+                        };
+
+                        saveToJsonFile(formData);
+                        // Optionally, show a confirmation message
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Form data saved successfully.'),
+                          ),
+                        );
                       }
                     },
                     child: Text('Save'),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle cancel action here
-                      // Clear form inputs and reset variables
-                      _formKey.currentState!.reset();
-                      setState(() {
-                        jcrRefNo = 'HKSandeep';
+        ElevatedButton(
+          onPressed: () {
+            // Clear form inputs and reset variables
+            _formKey.currentState!.reset();
+            setState(() {
+              // Clear text controllers
+              poReferenceController.clear();
+              poDateController.clear();
 
-                        customerName = '';
-                        location = '';
-                        department = '';
-                        jobLocationAndId = '';
-                        contactPerson = '';
-                        mobileNumber = '';
+              // Reset other variables
+              jcrRefNo = 'HKSandeep';
+              customerName = '';
+              location = '';
+              department = '';
+              jobLocationAndId = '';
+              contactPerson = '';
+              mobileNumber = '';
 
-                        defectType = 'Type-A';
-                        defectDetails = '';
-                        outputSheet = 'yes';
-                        numberOfLayers = 0;
-                        repairDimensions = '';
-                        applicationType = 'on-line';
-                      });
-                    },
-                    child: Text('Cancel'),
-                  ),
+              defectType = 'Type-A';
+              defectDetails = '';
+              outputSheet = 'yes';
+              numberOfLayers = 0;
+              repairDimensions = '';
+              applicationType = 'on-line';
+
+              // Clear the picked image
+              _pickedImage = null;
+            });
+
+            // Close the form and return to the previous screen (dashboard)
+            Navigator.pop(context);
+          },
+          child: Text('Cancel'),
+      ),
                 ],
               ),
             ],
@@ -405,4 +456,12 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
       ),
     );
   }
+
+  void saveToJsonFile(Map<String, dynamic> formData) {
+    final jsonString = json.encode(formData);
+    final file = File('form_data.json'); // Change the file path as needed
+
+    file.writeAsStringSync(jsonString);
+  }
+
 }

@@ -32,7 +32,7 @@ class Dashboard extends StatelessWidget {
           // Job Statistics
           Container(
             padding: EdgeInsets.all(16.0),
-            color: Colors.teal,
+            color:  Color(0xFF186F65),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
