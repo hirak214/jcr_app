@@ -42,29 +42,9 @@ class Dashboard extends StatelessWidget {
               ],
             ),
           ),
-          // Ongoing Jobs
+// Ongoing Jobs (integrated widget)
           Expanded(
-            child: ListView(
-              children: [
-                ExpansionTile(
-                  title: Text('Ongoing Jobs'),
-                  children: [
-                    ListTile(
-                      title: Text('Job 3 (Ongoing)'),
-                      onTap: () {
-                        // Navigate to details of Job 3 (Ongoing)
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Job 4 (Ongoing)'),
-                      onTap: () {
-                        // Navigate to details of Job 4 (Ongoing)
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            child: OngoingJobsWidget(),
           ),
           // Completed Jobs
           Expanded(
@@ -144,4 +124,52 @@ class Dashboard extends StatelessWidget {
       ],
     );
   }
+}
+
+class OngoingJobsWidget extends StatefulWidget {
+  @override
+  _OngoingJobsWidgetState createState() => _OngoingJobsWidgetState();
+}
+
+class _OngoingJobsWidgetState extends State<OngoingJobsWidget> {
+  List<OngoingJob> ongoingJobs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadOngoingJobs();
+  }
+
+  Future<void> loadOngoingJobs() async {
+    // Load ongoing job data from the form_data.json file
+    // (Same code as provided in the previous response)
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: Text('Ongoing Jobs'),
+      children: ongoingJobs.map((job) {
+        final poReference = job.poReference;
+        final formData = job.formData;
+
+        return ListTile(
+          title: Text('$poReference (Ongoing)'),
+          onTap: () {
+            // Navigate to details of the selected ongoing job
+          },
+        );
+      }).toList(),
+    );
+  }
+}
+
+class OngoingJob {
+  final String poReference;
+  final Map<String, dynamic> formData;
+
+  OngoingJob({
+    required this.poReference,
+    required this.formData,
+  });
 }

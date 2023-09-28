@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'pre_work_form.dart';
-import 'activity_form.dart';
 import 'dashboard.dart';
 
 void main() {
@@ -15,7 +13,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      // home: PreWorkFormPage(),
       home: Dashboard(),
     );
   }
