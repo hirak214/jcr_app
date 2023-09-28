@@ -579,6 +579,35 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
           content: Text('Form data saved successfully.'),
         ),
       );
+
+      // Clear the form inputs and navigate back to the dashboard
+      _formKey.currentState!.reset();
+      setState(() {
+        // Clear text controllers
+        poReferenceController.clear();
+
+        // Reset other variables
+        jcrRefNo = '';
+        customerName = '';
+        location = '';
+        department = '';
+        jobLocationAndId = '';
+        contactPerson = '';
+        mobileNumber = '';
+
+        defectType = 'Type-A';
+        defectDetails = '';
+        outputSheet = 'yes';
+        numberOfLayers = 0;
+        repairDimensions = '';
+        applicationType = 'on-line';
+
+        // Clear the picked image
+        _pickedImage = null;
+      });
+
+      // Navigate back to the dashboard
+      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
