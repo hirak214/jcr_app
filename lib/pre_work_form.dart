@@ -16,7 +16,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
   TextEditingController poReferenceController = TextEditingController();
   DateTime? selectedPoDate; // New DateTime variable for PO Date
 
-  String jcrRefNo = 'HKSandeep';
+  String jcrRefNo = '';
   String customerName = '';
   String location = '';
   String department = '';
@@ -137,13 +137,23 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                 ],
               ),
               TextFormField(
-                readOnly: true,
-                initialValue: 'HKSandeep',
+                initialValue: jcrRefNo,
+                onChanged: (value) {
+                  setState(() {
+                    jcrRefNo = value;
+                  });
+                },
                 decoration: InputDecoration(
                   labelText: 'JCR Ref. No',
-                  enabled: false,
                   labelStyle: TextStyle(color: Colors.grey),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter JCR Ref. No';
+                  }
+                  // Add additional validation rules here if needed
+                  return null; // Return null if validation passes
+                },
               ),
               SizedBox(height: 16),
 
