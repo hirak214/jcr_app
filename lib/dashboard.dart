@@ -186,24 +186,29 @@ class OngoingJobsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: const Text('Ongoing Jobs'),
-      children: ongoingJobs.map((job) {
-        final poReference = job.poReference;
+    return ListView(
+      physics: AlwaysScrollableScrollPhysics(), // Add this line to enable scrolling
+      children: [
+        ExpansionTile(
+          title: const Text('Ongoing Jobs'),
+          children: ongoingJobs.map((job) {
+            final poReference = job.poReference;
 
-        return ListTile(
-          title: Text('$poReference (Ongoing)'),
-          onTap: () {
-            // Navigate to ActivityFormPage without passing formData
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ActivityFormPage(),
-              ),
+            return ListTile(
+              title: Text('$poReference (Ongoing)'),
+              onTap: () {
+                // Navigate to ActivityFormPage without passing formData
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ActivityFormPage(),
+                  ),
+                );
+              },
             );
-          },
-        );
-      }).toList(),
+          }).toList(),
+        ),
+      ],
     );
   }
 }
