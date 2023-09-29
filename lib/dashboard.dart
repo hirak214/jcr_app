@@ -22,7 +22,57 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  List<OngoingJob> ongoingJobs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadOngoingJobs();
+  }
+
+  // Function to load ongoing job data from form_data.json file
+  Future<void> loadOngoingJobs() async {
+    try {
+      final directory = await getExternalStorageDirectory();
+      if (directory == null) {
+        return; // Handle error, unable to access storage directory
+      }
+
+      final filePath = '${directory.path}/form_data.json';
+      final file = File(filePath);
+
+      if (await file.exists()) {
+        final jsonData = await file.readAsString();
+        final List<dynamic> formDataList = json.decode(jsonData);
+
+        ongoingJobs = formDataList
+            .where((formData) {
+          // You can add a condition to check if this is an ongoing job
+          // For example, if formData['status'] == 'ongoing'
+          return true;
+        })
+            .map((formData) {
+          final poReference = formData['poReference'];
+          return OngoingJob(
+            poReference: poReference,
+            formData: formData,
+          );
+        })
+            .toList();
+
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error loading ongoing jobs: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +89,7 @@ class Dashboard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStat('Ongoing', '5'), // Replace '5' with actual ongoing job count
+                _buildStat('Ongoing', '${ongoingJobs.length}'),
                 _buildStat('Completed', '10'), // Replace '10' with actual completed job count
                 _buildStat('Pending', '3'), // Replace '3' with actual pending job count
               ],
@@ -47,9 +97,8 @@ class Dashboard extends StatelessWidget {
           ),
           // Ongoing Jobs (integrated widget)
           Expanded(
-            child: OngoingJobsWidget(),
+            child: OngoingJobsWidget(ongoingJobs: ongoingJobs),
           ),
-          // Padding added here
           // Completed Jobs
           Expanded(
             child: ListView(
@@ -130,65 +179,17 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-class OngoingJobsWidget extends StatefulWidget {
-  @override
-  _OngoingJobsWidgetState createState() => _OngoingJobsWidgetState();
-}
+class OngoingJobsWidget extends StatelessWidget {
+  final List<OngoingJob> ongoingJobs;
 
-class _OngoingJobsWidgetState extends State<OngoingJobsWidget> {
-  List<OngoingJob> ongoingJobs = [];
+  OngoingJobsWidget({required this.ongoingJobs});
 
-  @override
-  void initState() {
-    super.initState();
-    loadOngoingJobs();
-  }
-
-  // Function to load ongoing job data from form_data.json file
-  Future<void> loadOngoingJobs() async {
-    try {
-      final directory = await getExternalStorageDirectory(); // or getApplicationDocumentsDirectory()
-      if (directory == null) {
-        return; // Handle error, unable to access storage directory
-      }
-
-      final filePath = '${directory.path}/form_data.json';
-      final file = File(filePath);
-
-      if (await file.exists()) {
-        final jsonData = await file.readAsString();
-        final List<dynamic> formDataList = json.decode(jsonData);
-
-        // Process the formDataList and filter ongoing jobs
-        ongoingJobs = formDataList
-            .where((formData) {
-          // You can add a condition to check if this is an ongoing job
-          // For example, if formData['status'] == 'ongoing'
-          return true;
-        })
-            .map((formData) {
-          final poReference = formData['poReference'];
-          return OngoingJob(
-            poReference: poReference,
-            formData: formData,
-          );
-        })
-            .toList();
-
-        // Refresh the widget to reflect the loaded data
-        setState(() {});
-      }
-    } catch (e) {
-      print('Error loading ongoing jobs: $e');
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
       title: Text('Ongoing Jobs'),
       children: ongoingJobs.map((job) {
         final poReference = job.poReference;
-        final formData = job.formData;
 
         return ListTile(
           title: Text('$poReference (Ongoing)'),
