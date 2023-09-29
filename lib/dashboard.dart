@@ -35,7 +35,7 @@ class Dashboard extends StatelessWidget {
           // Job Statistics
           Container(
             padding: EdgeInsets.all(16.0),
-            color:  Color(0xFF186F65),
+            color: Color(0xFF186F65),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -45,10 +45,11 @@ class Dashboard extends StatelessWidget {
               ],
             ),
           ),
-// Ongoing Jobs (integrated widget)
+          // Ongoing Jobs (integrated widget)
           Expanded(
             child: OngoingJobsWidget(),
           ),
+          // Padding added here
           // Completed Jobs
           Expanded(
             child: ListView(
@@ -143,7 +144,7 @@ class _OngoingJobsWidgetState extends State<OngoingJobsWidget> {
     loadOngoingJobs();
   }
 
-// Function to load ongoing job data from form_data.json file
+  // Function to load ongoing job data from form_data.json file
   Future<void> loadOngoingJobs() async {
     try {
       final directory = await getExternalStorageDirectory(); // or getApplicationDocumentsDirectory()
