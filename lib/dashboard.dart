@@ -181,7 +181,6 @@ class _OngoingJobsWidgetState extends State<OngoingJobsWidget> {
       print('Error loading ongoing jobs: $e');
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
@@ -193,7 +192,13 @@ class _OngoingJobsWidgetState extends State<OngoingJobsWidget> {
         return ListTile(
           title: Text('$poReference (Ongoing)'),
           onTap: () {
-            // Navigate to details of the selected ongoing job
+            // Navigate to ActivityFormPage without passing formData
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ActivityFormPage(),
+              ),
+            );
           },
         );
       }).toList(),
