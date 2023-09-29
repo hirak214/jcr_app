@@ -38,23 +38,23 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Activity Form'),
+        title: const Text('Activity Form'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Job Details
-              Text(
+              const Text(
                 'Job Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: jobDateController,
-                decoration: InputDecoration(labelText: 'Job Date'),
+                decoration: const InputDecoration(labelText: 'Job Date'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Job Date.';
@@ -77,7 +77,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     preCleaning = value!;
                   });
                 },
-                decoration: InputDecoration(labelText: 'Pre-Cleaning'),
+                decoration: const InputDecoration(labelText: 'Pre-Cleaning'),
               ),
               TextFormField(
                 onChanged: (value) {
@@ -86,7 +86,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   });
                 },
                 decoration:
-                InputDecoration(labelText: 'Surface Preparation method'),
+                const InputDecoration(labelText: 'Surface Preparation method'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Surface Preparation method.';
@@ -102,7 +102,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 },
                 keyboardType: TextInputType.number,
                 decoration:
-                InputDecoration(labelText: 'Relative Humidity in %'),
+                const InputDecoration(labelText: 'Relative Humidity in %'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Relative Humidity.';
@@ -121,7 +121,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   });
                 },
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Surface Temperature'),
+                decoration: const InputDecoration(labelText: 'Surface Temperature'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Surface Temperature.';
@@ -144,7 +144,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     impregnation = value!;
                   });
                 },
-                decoration: InputDecoration(labelText: 'Impregnation'),
+                decoration: const InputDecoration(labelText: 'Impregnation'),
               ),
               DropdownButtonFormField<String>(
                 value: peelPly,
@@ -161,7 +161,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     peelPly = value!;
                   });
                 },
-                decoration: InputDecoration(labelText: 'Peel ply'),
+                decoration: const InputDecoration(labelText: 'Peel ply'),
               ),
               TextFormField(
                 onChanged: (value) {
@@ -170,7 +170,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   });
                 },
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Total area repaired'),
+                decoration: const InputDecoration(labelText: 'Total area repaired'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Total area repaired.';
@@ -178,15 +178,15 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Product Details
-              Text(
+              const Text(
                 'Product Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Resin',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -212,8 +212,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Hardener',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -239,8 +239,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Glass Carbon Tape',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -266,8 +266,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Top Coat',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -293,9 +293,9 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Product batch no'),
+                decoration: const InputDecoration(labelText: 'Product batch no'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Product batch no.';
@@ -305,7 +305,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
               ),
               TextFormField(
                 controller: expiryDateController,
-                decoration: InputDecoration(labelText: 'Expiry date'),
+                decoration: const InputDecoration(labelText: 'Expiry date'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Expiry Date.';
@@ -315,7 +315,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Consumption'),
+                decoration: const InputDecoration(labelText: 'Consumption'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Consumption.';
@@ -338,7 +338,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     productMixing = value!;
                   });
                 },
-                decoration: InputDecoration(labelText: 'Product mixing'),
+                decoration: const InputDecoration(labelText: 'Product mixing'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select a Product mixing option.';
@@ -352,7 +352,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     curingTime = value;
                   });
                 },
-                decoration: InputDecoration(labelText: 'Curing time'),
+                decoration: const InputDecoration(labelText: 'Curing time'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a valid Curing time.';
@@ -362,12 +362,12 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
               ),
 
               // Images During Job
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Images During Job',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _pickedImageDuringJob == null
                   ? ElevatedButton(
                 onPressed: () async {
@@ -382,7 +382,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     });
                   }
                 },
-                child: Text('Pick an Image During Job'),
+                child: const Text('Pick an Image During Job'),
               )
                   : Image.file(
                 _pickedImageDuringJob!,
@@ -392,12 +392,12 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
               ),
 
               // Images After Job
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Images After Job',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _pickedImageAfterJob == null
                   ? ElevatedButton(
                 onPressed: () async {
@@ -412,7 +412,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     });
                   }
                 },
-                child: Text('Pick an Image After Job'),
+                child: const Text('Pick an Image After Job'),
               )
                   : Image.file(
                 _pickedImageAfterJob!,
@@ -422,7 +422,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
               ),
 
               // Save and Submit buttons
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -431,7 +431,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       // Handle save action here without validation
                       // You can access form values using the variables defined above
                     },
-                    child: Text('Save'),
+                    child: const Text('Save'),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -440,7 +440,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         // You can access form values using the variables defined above
                       }
                     },
-                    child: Text('Submit'),
+                    child: const Text('Submit'),
                   ),
                 ],
               ),

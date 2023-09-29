@@ -77,15 +77,15 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Job Statistics
           Container(
-            padding: EdgeInsets.all(16.0),
-            color: Color(0xFF186F65),
+            padding: const EdgeInsets.all(16.0),
+            color: const Color(0xFF186F65),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -104,16 +104,16 @@ class _DashboardState extends State<Dashboard> {
             child: ListView(
               children: [
                 ExpansionTile(
-                  title: Text('Completed Jobs'),
+                  title: const Text('Completed Jobs'),
                   children: [
                     ListTile(
-                      title: Text('Job 1 (Completed)'),
+                      title: const Text('Job 1 (Completed)'),
                       onTap: () {
                         // Navigate to details of Job 1 (Completed)
                       },
                     ),
                     ListTile(
-                      title: Text('Job 2 (Completed)'),
+                      title: const Text('Job 2 (Completed)'),
                       onTap: () {
                         // Navigate to details of Job 2 (Completed)
                       },
@@ -128,16 +128,16 @@ class _DashboardState extends State<Dashboard> {
             child: ListView(
               children: [
                 ExpansionTile(
-                  title: Text('Pending Jobs'),
+                  title: const Text('Pending Jobs'),
                   children: [
                     ListTile(
-                      title: Text('Job 5 (Pending)'),
+                      title: const Text('Job 5 (Pending)'),
                       onTap: () {
                         // Navigate to details of Job 5 (Pending)
                       },
                     ),
                     ListTile(
-                      title: Text('Job 6 (Pending)'),
+                      title: const Text('Job 6 (Pending)'),
                       onTap: () {
                         // Navigate to details of Job 6 (Pending)
                       },
@@ -158,7 +158,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -168,11 +168,11 @@ class _DashboardState extends State<Dashboard> {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: const TextStyle(fontSize: 16, color: Colors.white),
         ),
         Text(
           value,
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: const TextStyle(fontSize: 20, color: Colors.white),
         ),
       ],
     );
@@ -187,7 +187,7 @@ class OngoingJobsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text('Ongoing Jobs'),
+      title: const Text('Ongoing Jobs'),
       children: ongoingJobs.map((job) {
         final poReference = job.poReference;
 
