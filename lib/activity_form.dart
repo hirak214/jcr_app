@@ -1,48 +1,125 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-// import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:path_provider/path_provider.dart';
 
 class ActivityFormPage extends StatefulWidget {
+  final String poReference;
+
+  ActivityFormPage({
+    required this.poReference,
+  });
+
   @override
   _ActivityFormPageState createState() => _ActivityFormPageState();
 }
 
 class _ActivityFormPageState extends State<ActivityFormPage> {
-  TextEditingController jobDateController = TextEditingController();
-  String preCleaning = 'Solvent Cleaning';
-  String surfacePreparationMethod = '';
-  String relativeHumidity = '';
-  String surfaceTemperature = '';
-  String impregnation = 'Yes (with spike roller)';
-  String peelPly = 'used';
-  String totalAreaRepaired = '';
-
-  String productName = '';
-  String resin = 'Loctite PC 7210-A';
-  String hardener = 'Loctite PC 7210-B';
-  String glassCarbonTape = 'Loctite PC 5085';
-  String topCoat = 'Loctite PC 7333';
-
-  String productBatchNo = '';
-  TextEditingController expiryDateController = TextEditingController();
-  String consumption = '';
-  String productMixing = 'Full Mixing';
-  String curingTime = '';
-
-  File? _pickedImageDuringJob;
-  File? _pickedImageAfterJob;
-
-  DateTime? selectedJobDate; // Add a DateTime variable for Job Date
-  DateTime? selectedExpiryDate; // Add a DateTime variable for Expiry Date
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  File? _pickedImageDuringJob = null;
+  File? _pickedImageAfterJob = null;
+  late TextEditingController jobDateController;
+  late String preCleaning;
+  late String surfacePreparationMethod;
+  late String relativeHumidity;
+  late String surfaceTemperature;
+  late String impregnation;
+  late String peelPly;
+  late String totalAreaRepaired;
+  late String productName;
+  late String resin;
+  late String hardener;
+  late String glassCarbonTape;
+  late String topCoat;
+  late String productBatchNo;
+  late TextEditingController expiryDateController;
+  late String consumption;
+  late String productMixing;
+  late String curingTime;
+  late DateTime? selectedJobDate;
+  late DateTime? selectedExpiryDate;
+
+  @override
+  void initState() {
+    super.initState();
+    jobDateController = TextEditingController();
+    preCleaning = 'Solvent Cleaning';
+    surfacePreparationMethod = '';
+    relativeHumidity = '';
+    surfaceTemperature = '';
+    impregnation = 'Yes (with spike roller)';
+    peelPly = 'used';
+    totalAreaRepaired = '';
+    productName = '';
+    resin = 'Loctite PC 7210-A';
+    hardener = 'Loctite PC 7210-B';
+    glassCarbonTape = 'Loctite PC 5085';
+    topCoat = 'Loctite PC 7333';
+    productBatchNo = '';
+    expiryDateController = TextEditingController();
+    consumption = '';
+    productMixing = 'Full Mixing';
+    curingTime = '';
+    selectedJobDate = DateTime.now();
+    selectedExpiryDate = DateTime.now();
+    loadExistingFormData();
+  }
+
+  Future<void> loadExistingFormData() async {
+    try {
+      final directory = await getExternalStorageDirectory();
+      if (directory == null) {
+        return;
+      }
+
+      final filePath = '${directory.path}/pre_work_form_data.json';
+      final file = File(filePath);
+
+      if (await file.exists()) {
+        final jsonData = await file.readAsString();
+        final List<dynamic> formDataList = json.decode(jsonData);
+
+        final existingForm = formDataList.firstWhere(
+              (formData) => formData['poReference'] == widget.poReference,
+          orElse: () => {},
+        );
+
+        if (existingForm.isNotEmpty) {
+          setState(() {
+            jobDateController.text = existingForm['jobDate'] ?? '';
+            preCleaning = existingForm['preCleaning'] ?? 'Solvent Cleaning';
+            surfacePreparationMethod = existingForm['surfacePreparationMethod'] ?? '';
+            relativeHumidity = existingForm['relativeHumidity'] ?? '';
+            surfaceTemperature = existingForm['surfaceTemperature'] ?? '';
+            impregnation = existingForm['impregnation'] ?? 'Yes (with spike roller)';
+            peelPly = existingForm['peelPly'] ?? 'used';
+            totalAreaRepaired = existingForm['totalAreaRepaired'] ?? '';
+            productName = existingForm['productName'] ?? '';
+            resin = existingForm['resin'] ?? 'Loctite PC 7210-A';
+            hardener = existingForm['hardener'] ?? 'Loctite PC 7210-B';
+            glassCarbonTape = existingForm['glassCarbonTape'] ?? 'Loctite PC 5085';
+            topCoat = existingForm['topCoat'] ?? 'Loctite PC 7333';
+            productBatchNo = existingForm['productBatchNo'] ?? '';
+            expiryDateController.text = existingForm['expiryDate'] ?? '';
+            consumption = existingForm['consumption'] ?? '';
+            productMixing = existingForm['productMixing'] ?? 'Full Mixing';
+            curingTime = existingForm['curingTime'] ?? '';
+            selectedJobDate = DateTime.tryParse(existingForm['jobDate'] ?? '');
+            selectedExpiryDate = DateTime.tryParse(existingForm['expiryDate'] ?? '');
+          });
+        }
+      }
+    } catch (e) {
+      print('Error loading existing form data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity Form'),
+        title: Text('Activity Form for ${widget.poReference}'), // Use the poReference in the title
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -557,6 +634,13 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
+                      saveFormData();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Form data saved successfully.'),
+                          ),
+                      );
+
                       // Handle save action here without validation
                       // You can access form values using the variables defined above
                     },
@@ -567,6 +651,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       if (_formKey.currentState!.validate()) {
                         // The form is valid, you can handle submit action here
                         // You can access form values using the variables defined above
+
                       }
                     },
                     child: const Text('Submit'),
@@ -579,4 +664,73 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       ),
     );
   }
+  Map<String, dynamic> getActivityFormData() {
+    return {
+      'poReference': widget.poReference, // Include the poReference
+      'jobDate': selectedJobDate?.toLocal().toString().split(' ')[0] ?? '',
+      'preCleaning': preCleaning,
+      'surfacePreparationMethod': surfacePreparationMethod,
+      'relativeHumidity': relativeHumidity,
+      'surfaceTemperature': surfaceTemperature,
+      'impregnation': impregnation,
+      'peelPly': peelPly,
+      'totalAreaRepaired': totalAreaRepaired,
+      'productName': productName,
+      'resin': resin,
+      'hardener': hardener,
+      'glassCarbonTape': glassCarbonTape,
+      'topCoat': topCoat,
+      'productBatchNo': productBatchNo,
+      'expiryDate': selectedExpiryDate?.toLocal().toString().split(' ')[0] ?? '',
+      'consumption': consumption,
+      'productMixing': productMixing,
+      'curingTime': curingTime,
+      // Include other form fields here
+    };
+  }
+  Future<void> saveFormData() async {
+    try {
+      final directory = await getExternalStorageDirectory();
+      if (directory == null) {
+        return; // Handle error, unable to access storage directory
+      }
+
+      final filePath = '${directory.path}/activity_form_data.json';
+      final file = File(filePath);
+
+      // Read existing data from the file
+      List<dynamic> formDataList = [];
+      if (await file.exists()) {
+        final jsonData = await file.readAsString();
+        formDataList = json.decode(jsonData);
+
+        // Check if there is existing data with the same poReference
+        final existingDataIndex = formDataList.indexWhere((formData) =>
+        formData['poReference'] == widget.poReference);
+
+        if (existingDataIndex != -1) {
+          // Update the existing entry with new data
+          formDataList[existingDataIndex] = getActivityFormData();
+        } else {
+          // Append the new data
+          formDataList.add(getActivityFormData());
+        }
+      } else {
+        // If the file doesn't exist, create a new list with the current data
+        formDataList = [getActivityFormData()];
+      }
+
+      // Write the updated list back to the file
+      await file.writeAsString(json.encode(formDataList));
+
+      // Optionally, you can show a confirmation dialog here
+    } catch (e) {
+      print('Error saving form data: $e');
+      // Handle the error
+    }
+  }
+
+
 }
+
+

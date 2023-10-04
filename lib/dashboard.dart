@@ -29,11 +29,13 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<OngoingJob> ongoingJobs = [];
+  List<ActivityFormData> activityForms = [];
 
   @override
   void initState() {
     super.initState();
     loadOngoingJobs();
+    loadActivityForms();
   }
 
   // Function to load ongoing job data from form_data.json file
@@ -51,25 +53,52 @@ class _DashboardState extends State<Dashboard> {
         final jsonData = await file.readAsString();
         final List<dynamic> formDataList = json.decode(jsonData);
 
-        ongoingJobs = formDataList
-            .where((formData) {
+        ongoingJobs = formDataList.where((formData) {
           // You can add a condition to check if this is an ongoing job
           // For example, if formData['status'] == 'ongoing'
           return true;
-        })
-            .map((formData) {
+        }).map((formData) {
           final poReference = formData['poReference'];
           return OngoingJob(
             poReference: poReference,
             formData: formData,
           );
-        })
-            .toList();
+        }).toList();
 
         setState(() {});
       }
     } catch (e) {
       print('Error loading ongoing jobs: $e');
+    }
+  }
+
+  // Function to load activity form data from activity_form_data.json file
+  Future<void> loadActivityForms() async {
+    try {
+      final directory = await getExternalStorageDirectory();
+      if (directory == null) {
+        return; // Handle error, unable to access storage directory
+      }
+
+      final filePath = '${directory.path}/activity_form_data.json';
+      final file = File(filePath);
+
+      if (await file.exists()) {
+        final jsonData = await file.readAsString();
+        final List<dynamic> formDataList = json.decode(jsonData);
+
+        activityForms = formDataList.map((formData) {
+          final poReference = formData['poReference'];
+          return ActivityFormData(
+            poReference: poReference,
+            formData: formData,
+          );
+        }).toList();
+
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error loading activity forms: $e');
     }
   }
 
@@ -90,8 +119,10 @@ class _DashboardState extends State<Dashboard> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildStat('Ongoing', '${ongoingJobs.length}'),
-                _buildStat('Completed', '10'), // Replace '10' with actual completed job count
-                _buildStat('Pending', '3'), // Replace '3' with actual pending job count
+                _buildStat('Completed', '10'),
+                // Replace '10' with actual completed job count
+                _buildStat('Pending', '3'),
+                // Replace '3' with actual pending job count
               ],
             ),
           ),
@@ -126,25 +157,28 @@ class _DashboardState extends State<Dashboard> {
           // Pending Jobs
           Expanded(
             child: ListView(
-              children: [
-                ExpansionTile(
-                  title: const Text('Pending Jobs'),
+              children: activityForms.map((form) {
+                final poReference = form.poReference;
+
+                return ExpansionTile(
+                  title: Text('$poReference (Activity Form)'),
                   children: [
                     ListTile(
-                      title: const Text('Job 5 (Pending)'),
+                      title: const Text('Edit Activity Form'),
                       onTap: () {
-                        // Navigate to details of Job 5 (Pending)
-                      },
-                    ),
-                    ListTile(
-                      title: const Text('Job 6 (Pending)'),
-                      onTap: () {
-                        // Navigate to details of Job 6 (Pending)
+                        // Navigate to the ActivityFormPage with the given poReference
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ActivityFormPage(
+                              poReference: poReference),
+                          ),
+                        );
                       },
                     ),
                   ],
-                ),
-              ],
+                );
+              }).toList(),
             ),
           ),
         ],
@@ -187,7 +221,8 @@ class OngoingJobsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      physics: AlwaysScrollableScrollPhysics(), // Add this line to enable scrolling
+      physics: AlwaysScrollableScrollPhysics(),
+      // Add this line to enable scrolling
       children: [
         ExpansionTile(
           title: const Text('Ongoing Jobs'),
@@ -201,7 +236,7 @@ class OngoingJobsWidget extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ActivityFormPage(),
+                    builder: (context) => ActivityFormPage(poReference: poReference),
                   ),
                 );
               },
@@ -218,6 +253,16 @@ class OngoingJob {
   final Map<String, dynamic> formData;
 
   OngoingJob({
+    required this.poReference,
+    required this.formData,
+  });
+}
+
+class ActivityFormData {
+  final String poReference;
+  final Map<String, dynamic> formData;
+
+  ActivityFormData({
     required this.poReference,
     required this.formData,
   });
