@@ -20,6 +20,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   File? _pickedImageDuringJob = null;
   File? _pickedImageAfterJob = null;
   late TextEditingController jobDateController = TextEditingController();
+  
+  late TextEditingController surfacePreparationController = TextEditingController();
   late String preCleaning = 'Solvent Cleaning';
   late String surfacePreparationMethod = 'Solvent Cleaning';
   late String relativeHumidity = '0';
@@ -39,6 +41,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late String curingTime = '0';
   late DateTime? selectedJobDate = DateTime.now();
   late DateTime? selectedExpiryDate = DateTime.now();
+
+
 
   @override
   void initState() {
@@ -201,9 +205,10 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   // Surface Preparation Method
                   Expanded(
                     child: TextFormField(
+                      controller: surfacePreparationController,
                       onChanged: (value) {
                         setState(() {
-                          surfacePreparationMethod = 'HirakkkkkDesaiiii';
+                          surfacePreparationMethod = value;
                         });
                       },
                       decoration:
