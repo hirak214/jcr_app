@@ -22,6 +22,26 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late TextEditingController jobDateController = TextEditingController();
 
   late TextEditingController surfacePreparationController = TextEditingController();
+  late TextEditingController expiryDateController = TextEditingController();
+  late TextEditingController productBatchNoController = TextEditingController();
+  late TextEditingController consumptionController = TextEditingController();
+  late TextEditingController curingTimeController = TextEditingController();
+  late TextEditingController relativeHumidityController = TextEditingController();
+  late TextEditingController surfaceTemperatureController = TextEditingController();
+  late TextEditingController totalAreaRepairedController = TextEditingController();
+  late TextEditingController productNameController = TextEditingController();
+  late TextEditingController resinController = TextEditingController();
+  late TextEditingController hardenerController = TextEditingController();
+  late TextEditingController glassCarbonTapeController = TextEditingController();
+  late TextEditingController topCoatController = TextEditingController();
+  late TextEditingController productMixingController = TextEditingController();
+  late TextEditingController preCleaningController = TextEditingController();
+  late TextEditingController impregnationController = TextEditingController();
+  late TextEditingController peelPlyController = TextEditingController();
+  late TextEditingController surfacePreparationMethodController = TextEditingController();
+  late TextEditingController imagesDuringJobController = TextEditingController();
+  late TextEditingController imagesAfterJobController = TextEditingController();
+
   late String preCleaning = 'Solvent Cleaning';
   late String surfacePreparationMethod = 'Solvent Cleaning';
   late String relativeHumidity = '0';
@@ -35,7 +55,6 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late String glassCarbonTape = 'Loctite PC 5085';
   late String topCoat = 'Loctite PC 7333';
   late String productBatchNo = '';
-  late TextEditingController expiryDateController = TextEditingController();
   late String consumption = '0';
   late String productMixing = 'Full Mixing';
   late String curingTime = '0';
@@ -47,7 +66,29 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
     super.initState();
     jobDateController = TextEditingController();
     surfacePreparationController = TextEditingController();
+    expiryDateController = TextEditingController();
+    productBatchNoController = TextEditingController();
+    consumptionController = TextEditingController();
+    curingTimeController = TextEditingController();
+    relativeHumidityController = TextEditingController();
+    surfaceTemperatureController = TextEditingController();
+    totalAreaRepairedController = TextEditingController();
+    productNameController = TextEditingController();
+    resinController = TextEditingController();
+    hardenerController = TextEditingController();
+    glassCarbonTapeController = TextEditingController();
+    topCoatController = TextEditingController();
+    productMixingController = TextEditingController();
+    preCleaningController = TextEditingController();
+    impregnationController = TextEditingController();
+    peelPlyController = TextEditingController();
+    surfacePreparationMethodController = TextEditingController();
+    imagesDuringJobController = TextEditingController();
+    imagesAfterJobController = TextEditingController();
+
     loadExistingFormData();
+
+
   }
 
   Future<void> loadExistingFormData() async {
@@ -96,23 +137,43 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
         setState(() {
           jobDateController.text = existingForm['jobDate'];
           surfacePreparationController.text = existingForm['surfacePreparationMethod'];
-          preCleaning = existingForm['preCleaning'];
-          surfacePreparationMethod = existingForm['surfacePreparationMethod'];
-          relativeHumidity = existingForm['relativeHumidity'];
-          surfaceTemperature = existingForm['surfaceTemperature'];
-          impregnation = existingForm['impregnation'];
-          peelPly = existingForm['peelPly'];
-          totalAreaRepaired = existingForm['totalAreaRepaired'];
-          productName = existingForm['productName'];
-          resin = existingForm['resin'];
-          hardener = existingForm['hardener'];
-          glassCarbonTape = existingForm['glassCarbonTape'];
-          topCoat = existingForm['topCoat'];
-          productBatchNo = existingForm['productBatchNo'];
+          preCleaningController.text = existingForm['preCleaning'];
+          relativeHumidityController.text = existingForm['relativeHumidity'];
+          surfaceTemperatureController.text = existingForm['surfaceTemperature'];
+          impregnationController.text = existingForm['impregnation'];
+          peelPlyController.text = existingForm['peelPly'];
+          totalAreaRepairedController.text = existingForm['totalAreaRepaired'];
+          productNameController.text = existingForm['productName'];
+          resinController.text = existingForm['resin'];
+          hardenerController.text = existingForm['hardener'];
+          glassCarbonTapeController.text = existingForm['glassCarbonTape'];
+          topCoatController.text = existingForm['topCoat'];
+          productBatchNoController.text = existingForm['productBatchNo'];
           expiryDateController.text = existingForm['expiryDate'];
-          consumption = existingForm['consumption'];
-          productMixing = existingForm['productMixing'];
-          curingTime = existingForm['curingTime'];
+          consumptionController.text = existingForm['consumption'];
+          productMixingController.text = existingForm['productMixing'];
+          curingTimeController.text = existingForm['curingTime'];
+
+          // Set the default values for other form fields
+          surfacePreparationMethod = existingForm['surfacePreparationMethod'] ?? 'Solvent Cleaning';
+          preCleaning = existingForm['preCleaning'] ?? 'Solvent Cleaning';
+          relativeHumidity = existingForm['relativeHumidity'] ?? '0';
+          surfaceTemperature = existingForm['surfaceTemperature'] ?? '0';
+          impregnation = existingForm['impregnation'] ?? 'Yes (with spike roller)';
+          peelPly = existingForm['peelPly'] ?? 'used';
+          totalAreaRepaired = existingForm['totalAreaRepaired'] ?? '0';
+          productName = existingForm['productName'] ?? 'Loctite PC 7210-A';
+          resin = existingForm['resin'] ?? 'Loctite PC 7210-A';
+          hardener = existingForm['hardener'] ?? 'Loctite PC 7210-B';
+          glassCarbonTape = existingForm['glassCarbonTape'] ?? 'Loctite PC 5085';
+          topCoat = existingForm['topCoat'] ?? 'Loctite PC 7333';
+          productBatchNo = existingForm['productBatchNo'] ?? '';
+          consumption = existingForm['consumption'] ?? '0';
+          productMixing = existingForm['productMixing'] ?? 'Full Mixing';
+          curingTime = existingForm['curingTime'] ?? '0';
+          selectedJobDate = DateTime.tryParse(existingForm['jobDate'] ?? '');
+          selectedExpiryDate = DateTime.tryParse(existingForm['expiryDate'] ?? '');
+
         });
       }
     } catch (e) {
@@ -221,6 +282,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   // Relative Humidity
                   Expanded(
                     child: TextFormField(
+                      controller: relativeHumidityController,
                       onChanged: (value) {
                         setState(() {
                           relativeHumidity = value;
@@ -249,6 +311,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   // Surface Temperature
                   Expanded(
                     child: TextFormField(
+                      controller: surfaceTemperatureController,
                       onChanged: (value) {
                         setState(() {
                           surfaceTemperature = value;
@@ -455,6 +518,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   // Product Batch No
                   Expanded(
                     child: TextFormField(
+                      controller: productBatchNoController,
                       onChanged: (value) {
                         setState(() {
                           productBatchNo = value;
@@ -558,6 +622,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   // Curing Time
                   Expanded(
                     child: TextFormField(
+                      controller: curingTimeController,
                       onChanged: (value) {
                         setState(() {
                           curingTime = value;
