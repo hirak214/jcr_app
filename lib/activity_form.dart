@@ -20,13 +20,13 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   File? _pickedImageDuringJob = null;
   File? _pickedImageAfterJob = null;
   late TextEditingController jobDateController = TextEditingController();
-  
+
   late TextEditingController surfacePreparationController = TextEditingController();
   late String preCleaning = 'Solvent Cleaning';
   late String surfacePreparationMethod = 'Solvent Cleaning';
   late String relativeHumidity = '0';
   late String surfaceTemperature = '0';
-  late String impregnation = 'Yes (with spike roller)'; // Initialize with a default value
+  late String impregnation = 'Yes (with spike roller)';
   late String peelPly = 'used';
   late String totalAreaRepaired = '0';
   late String productName = 'Loctite PC 7210-A';
@@ -42,11 +42,11 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late DateTime? selectedJobDate = DateTime.now();
   late DateTime? selectedExpiryDate = DateTime.now();
 
-
-
   @override
   void initState() {
     super.initState();
+    jobDateController = TextEditingController();
+    surfacePreparationController = TextEditingController();
     loadExistingFormData();
   }
 
@@ -64,7 +64,6 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
         final jsonData = await file.readAsString();
         final List<dynamic> formDataList = json.decode(jsonData);
 
-
         // Find the existing form data by matching the poReference
         final existingForm = formDataList.firstWhere(
               (formData) => formData['poReference'] == widget.poReference,
@@ -72,30 +71,31 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
             'jobDate': '',
             'preCleaning': 'Solvent Cleaning', // Set default values here
             'surfacePreparationMethod': '',
-            'relativeHumidity': 'Hirakkkk',
-            'surfaceTemperature': 'Hirakkk',
+            'relativeHumidity': '0',
+            'surfaceTemperature': '0',
             'impregnation': 'Yes (with spike roller)',
             'peelPly': 'used',
-            'totalAreaRepaired': '',
-            'productName': '',
+            'totalAreaRepaired': '0',
+            'productName': 'Loctite PC 7210-A',
             'resin': 'Loctite PC 7210-A',
             'hardener': 'Loctite PC 7210-B',
             'glassCarbonTape': 'Loctite PC 5085',
             'topCoat': 'Loctite PC 7333',
             'productBatchNo': '',
             'expiryDate': '',
-            'consumption': '',
+            'consumption': '0',
             'productMixing': 'Full Mixing',
-            'curingTime': '',
+            'curingTime': '0',
             'poReference': widget.poReference, // Include the poReference in the form data
             'imagesDuringJob': [],
             'imagesAfterJob': [],
             // Add default values for other form fields
           },
         );
-        print(existingForm);
+
         setState(() {
           jobDateController.text = existingForm['jobDate'];
+          surfacePreparationController.text = existingForm['surfacePreparationMethod'];
           preCleaning = existingForm['preCleaning'];
           surfacePreparationMethod = existingForm['surfacePreparationMethod'];
           relativeHumidity = existingForm['relativeHumidity'];
@@ -120,8 +120,6 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       // Handle the error
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -148,8 +146,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: TextFormField(
                       controller: TextEditingController(
-                        text: selectedJobDate?.toLocal().toString().split(
-                            ' ')[0] ?? '',
+                        text: selectedJobDate?.toLocal().toString().split(' ')[0] ?? '',
                       ),
                       readOnly: true,
                       onTap: () async {
@@ -645,9 +642,9 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     onPressed: () {
                       saveFormData();
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Form data saved successfully.'),
-                          ),
+                        SnackBar(
+                          content: Text('Form data saved successfully.'),
+                        ),
                       );
 
                       // Handle save action here without validation
@@ -673,6 +670,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       ),
     );
   }
+
   Map<String, dynamic> getActivityFormData() {
     return {
       'poReference': widget.poReference, // Include the poReference
@@ -694,9 +692,11 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       'consumption': consumption,
       'productMixing': productMixing,
       'curingTime': curingTime,
-      // Include other form fields here
+      'imagesDuringJob': _pickedImageDuringJob?.path ?? '',
+      'imagesAfterJob': _pickedImageAfterJob?.path ?? '',
     };
   }
+
   Future<void> saveFormData() async {
     try {
       final directory = await getExternalStorageDirectory();
@@ -707,37 +707,31 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       final filePath = '${directory.path}/activity_form_data.json';
       final file = File(filePath);
 
-      // Read existing data from the file
       List<dynamic> formDataList = [];
+
+      // Check if the file already exists
       if (await file.exists()) {
         final jsonData = await file.readAsString();
         formDataList = json.decode(jsonData);
-
-        // Check if there is existing data with the same poReference
-        final existingDataIndex = formDataList.indexWhere((formData) =>
-        formData['poReference'] == widget.poReference);
-
-        if (existingDataIndex != -1) {
-          // Update the existing entry with new data
-          formDataList[existingDataIndex] = getActivityFormData();
-        } else {
-          // Append the new data
-          formDataList.add(getActivityFormData());
-        }
-      } else {
-        // If the file doesn't exist, create a new list with the current data
-        formDataList = [getActivityFormData()];
       }
 
-      // Write the updated list back to the file
-      await file.writeAsString(json.encode(formDataList));
+      // Find the existing form data by matching the poReference
+      final existingIndex = formDataList.indexWhere(
+            (formData) => formData['poReference'] == widget.poReference,
+      );
 
-      // Optionally, you can show a confirmation dialog here
+      // Add or update the form data
+      if (existingIndex != -1) {
+        formDataList[existingIndex] = getActivityFormData();
+      } else {
+        formDataList.add(getActivityFormData());
+      }
+
+      // Write the updated data back to the file
+      await file.writeAsString(json.encode(formDataList));
     } catch (e) {
       print('Error saving form data: $e');
       // Handle the error
     }
   }
 }
-
-
