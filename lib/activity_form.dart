@@ -19,50 +19,30 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   File? _pickedImageDuringJob = null;
   File? _pickedImageAfterJob = null;
-  late TextEditingController jobDateController;
-  late String preCleaning;
-  late String surfacePreparationMethod;
-  late String relativeHumidity;
-  late String surfaceTemperature;
-  late String impregnation;
-  late String peelPly;
-  late String totalAreaRepaired;
-  late String productName;
-  late String resin;
-  late String hardener;
-  late String glassCarbonTape;
-  late String topCoat;
-  late String productBatchNo;
-  late TextEditingController expiryDateController;
-  late String consumption;
-  late String productMixing;
-  late String curingTime;
-  late DateTime? selectedJobDate;
-  late DateTime? selectedExpiryDate;
+  late TextEditingController jobDateController = TextEditingController();
+  late String preCleaning = 'Solvent Cleaning';
+  late String surfacePreparationMethod = 'Solvent Cleaning';
+  late String relativeHumidity = '0';
+  late String surfaceTemperature = '0';
+  late String impregnation = 'Yes (with spike roller)'; // Initialize with a default value
+  late String peelPly = 'used';
+  late String totalAreaRepaired = '0';
+  late String productName = 'Loctite PC 7210-A';
+  late String resin = 'Loctite PC 7210-A';
+  late String hardener = 'Loctite PC 7210-B';
+  late String glassCarbonTape = 'Loctite PC 5085';
+  late String topCoat = 'Loctite PC 7333';
+  late String productBatchNo = '';
+  late TextEditingController expiryDateController = TextEditingController();
+  late String consumption = '0';
+  late String productMixing = 'Full Mixing';
+  late String curingTime = '0';
+  late DateTime? selectedJobDate = DateTime.now();
+  late DateTime? selectedExpiryDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    jobDateController = TextEditingController();
-    preCleaning = 'Solvent Cleaning';
-    surfacePreparationMethod = '';
-    relativeHumidity = '';
-    surfaceTemperature = '';
-    impregnation = 'Yes (with spike roller)';
-    peelPly = 'used';
-    totalAreaRepaired = '';
-    productName = '';
-    resin = 'Loctite PC 7210-A';
-    hardener = 'Loctite PC 7210-B';
-    glassCarbonTape = 'Loctite PC 5085';
-    topCoat = 'Loctite PC 7333';
-    productBatchNo = '';
-    expiryDateController = TextEditingController();
-    consumption = '';
-    productMixing = 'Full Mixing';
-    curingTime = '';
-    selectedJobDate = DateTime.now();
-    selectedExpiryDate = DateTime.now();
     loadExistingFormData();
   }
 
@@ -70,50 +50,74 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
     try {
       final directory = await getExternalStorageDirectory();
       if (directory == null) {
-        return;
+        return; // Handle error, unable to access storage directory
       }
 
-      final filePath = '${directory.path}/pre_work_form_data.json';
+      final filePath = '${directory.path}/activity_form_data.json';
       final file = File(filePath);
 
       if (await file.exists()) {
         final jsonData = await file.readAsString();
         final List<dynamic> formDataList = json.decode(jsonData);
 
+
+        // Find the existing form data by matching the poReference
         final existingForm = formDataList.firstWhere(
               (formData) => formData['poReference'] == widget.poReference,
-          orElse: () => {},
+          orElse: () => {
+            'jobDate': '',
+            'preCleaning': 'Solvent Cleaning', // Set default values here
+            'surfacePreparationMethod': '',
+            'relativeHumidity': 'Hirakkkk',
+            'surfaceTemperature': 'Hirakkk',
+            'impregnation': 'Yes (with spike roller)',
+            'peelPly': 'used',
+            'totalAreaRepaired': '',
+            'productName': '',
+            'resin': 'Loctite PC 7210-A',
+            'hardener': 'Loctite PC 7210-B',
+            'glassCarbonTape': 'Loctite PC 5085',
+            'topCoat': 'Loctite PC 7333',
+            'productBatchNo': '',
+            'expiryDate': '',
+            'consumption': '',
+            'productMixing': 'Full Mixing',
+            'curingTime': '',
+            'poReference': widget.poReference, // Include the poReference in the form data
+            'imagesDuringJob': [],
+            'imagesAfterJob': [],
+            // Add default values for other form fields
+          },
         );
-
-        if (existingForm.isNotEmpty) {
-          setState(() {
-            jobDateController.text = existingForm['jobDate'] ?? '';
-            preCleaning = existingForm['preCleaning'] ?? 'Solvent Cleaning';
-            surfacePreparationMethod = existingForm['surfacePreparationMethod'] ?? '';
-            relativeHumidity = existingForm['relativeHumidity'] ?? '';
-            surfaceTemperature = existingForm['surfaceTemperature'] ?? '';
-            impregnation = existingForm['impregnation'] ?? 'Yes (with spike roller)';
-            peelPly = existingForm['peelPly'] ?? 'used';
-            totalAreaRepaired = existingForm['totalAreaRepaired'] ?? '';
-            productName = existingForm['productName'] ?? '';
-            resin = existingForm['resin'] ?? 'Loctite PC 7210-A';
-            hardener = existingForm['hardener'] ?? 'Loctite PC 7210-B';
-            glassCarbonTape = existingForm['glassCarbonTape'] ?? 'Loctite PC 5085';
-            topCoat = existingForm['topCoat'] ?? 'Loctite PC 7333';
-            productBatchNo = existingForm['productBatchNo'] ?? '';
-            expiryDateController.text = existingForm['expiryDate'] ?? '';
-            consumption = existingForm['consumption'] ?? '';
-            productMixing = existingForm['productMixing'] ?? 'Full Mixing';
-            curingTime = existingForm['curingTime'] ?? '';
-            selectedJobDate = DateTime.tryParse(existingForm['jobDate'] ?? '');
-            selectedExpiryDate = DateTime.tryParse(existingForm['expiryDate'] ?? '');
-          });
-        }
+        print(existingForm);
+        setState(() {
+          jobDateController.text = existingForm['jobDate'];
+          preCleaning = existingForm['preCleaning'];
+          surfacePreparationMethod = existingForm['surfacePreparationMethod'];
+          relativeHumidity = existingForm['relativeHumidity'];
+          surfaceTemperature = existingForm['surfaceTemperature'];
+          impregnation = existingForm['impregnation'];
+          peelPly = existingForm['peelPly'];
+          totalAreaRepaired = existingForm['totalAreaRepaired'];
+          productName = existingForm['productName'];
+          resin = existingForm['resin'];
+          hardener = existingForm['hardener'];
+          glassCarbonTape = existingForm['glassCarbonTape'];
+          topCoat = existingForm['topCoat'];
+          productBatchNo = existingForm['productBatchNo'];
+          expiryDateController.text = existingForm['expiryDate'];
+          consumption = existingForm['consumption'];
+          productMixing = existingForm['productMixing'];
+          curingTime = existingForm['curingTime'];
+        });
       }
     } catch (e) {
       print('Error loading existing form data: $e');
+      // Handle the error
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +203,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     child: TextFormField(
                       onChanged: (value) {
                         setState(() {
-                          surfacePreparationMethod = value;
+                          surfacePreparationMethod = 'HirakkkkkDesaiiii';
                         });
                       },
                       decoration:
@@ -729,8 +733,6 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       // Handle the error
     }
   }
-
-
 }
 
 

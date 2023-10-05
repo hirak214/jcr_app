@@ -560,6 +560,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
     print('Appending form data to $filePath');
     try {
       final file = File(filePath);
+      print(file);
 
       // Read existing data from the file, if any
       List<dynamic> existingData = [];
