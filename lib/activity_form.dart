@@ -369,7 +369,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                           peelPly = value!;
                         });
                       },
-                      decoration: const InputDecoration(labelText: 'Peel ply'),
+                      decoration: const InputDecoration(labelText: 'Peel Ply'),
                     ),
                   ),
                   // Total Area Repaired
@@ -427,6 +427,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         }
                         return null;
                       },
+                      decoration: const InputDecoration(labelText: 'Resin'),
                     ),
                   ),
                   // Hardener Dropdown
@@ -452,6 +453,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         }
                         return null;
                       },
+                      decoration: const InputDecoration(labelText: 'Hardner'),
                     ),
                   ),
                 ],
@@ -483,6 +485,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         }
                         return null;
                       },
+                      decoration: const InputDecoration(labelText: 'Glass Carbon Tape'),
                     ),
                   ),
                   // Top Coat Dropdown
@@ -508,6 +511,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         }
                         return null;
                       },
+                      decoration: const InputDecoration(labelText: 'Top Coat'),
                     ),
                   ),
                 ],
@@ -607,7 +611,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                           productMixing = value!;
                         });
                       },
-                      decoration: const InputDecoration(labelText: 'Product mixing'),
+                      decoration: const InputDecoration(labelText: 'Product Mixing'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please select a Product mixing option.';
