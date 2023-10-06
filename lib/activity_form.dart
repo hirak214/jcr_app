@@ -375,6 +375,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   // Total Area Repaired
                   Expanded(
                     child: TextFormField(
+                      controller: totalAreaRepairedController,
                       onChanged: (value) {
                         setState(() {
                           totalAreaRepaired = value;
@@ -574,6 +575,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   // Consumption
                   Expanded(
                     child: TextFormField(
+                      controller: consumptionController,
                       onChanged: (value) {
                         setState(() {
                           consumption = value;
