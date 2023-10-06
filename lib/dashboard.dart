@@ -102,86 +102,70 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
+  Future<void> refreshData() async {
+    // Call the load functions to refresh data
+    await loadOngoingJobs();
+    await loadActivityForms();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('JCR Dashboard'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Job Statistics
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            color: const Color(0xFF186F65),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildStat('Ongoing', '${ongoingJobs.length}'),
-                _buildStat('Completed', '10'),
-                // Replace '10' with actual completed job count
-                _buildStat('Pending', '3'),
-                // Replace '3' with actual pending job count
-              ],
+      body: RefreshIndicator(
+        onRefresh: refreshData, // Trigger refreshData when refreshing
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Job Statistics
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              color: const Color(0xFF186F65),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildStat('Ongoing', '${ongoingJobs.length}'),
+                  // Replace '10' with actual completed job count
+                  _buildStat('Pending', '${activityForms.length}'),
+                  // Replace '3' with actual pending job count
+                ],
+              ),
             ),
-          ),
-          // Ongoing Jobs (integrated widget)
-          Expanded(
-            child: OngoingJobsWidget(ongoingJobs: ongoingJobs),
-          ),
-          // Completed Jobs
-          Expanded(
-            child: ListView(
-              children: [
-                ExpansionTile(
-                  title: const Text('Completed Jobs'),
-                  children: [
-                    ListTile(
-                      title: const Text('Job 1 (Completed)'),
-                      onTap: () {
-                        // Navigate to details of Job 1 (Completed)
-                      },
-                    ),
-                    ListTile(
-                      title: const Text('Job 2 (Completed)'),
-                      onTap: () {
-                        // Navigate to details of Job 2 (Completed)
-                      },
-                    ),
-                  ],
-                ),
-              ],
+            // Ongoing Jobs (integrated widget)
+            Expanded(
+              child: OngoingJobsWidget(ongoingJobs: ongoingJobs),
             ),
-          ),
-          // Pending Jobs
-          Expanded(
-            child: ListView(
-              children: activityForms.map((form) {
-                final poReference = form.poReference;
+            // Pending Jobs
+            Expanded(
+              child: ListView(
+                children: activityForms.map((form) {
+                  final poReference = form.poReference;
 
-                return ExpansionTile(
-                  title: Text('$poReference (Activity Form)'),
-                  children: [
-                    ListTile(
-                      title: const Text('Edit Activity Form'),
-                      onTap: () {
-                        // Navigate to the ActivityFormPage with the given poReference
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ActivityFormPage(
-                              poReference: poReference),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              }).toList(),
+                  return ExpansionTile(
+                    title: Text('$poReference (Activity Form)'),
+                    children: [
+                      ListTile(
+                        title: const Text('Edit Activity Form'),
+                        onTap: () {
+                          // Navigate to the ActivityFormPage with the given poReference
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ActivityFormPage(poReference: poReference),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -236,7 +220,8 @@ class OngoingJobsWidget extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ActivityFormPage(poReference: poReference),
+                    builder: (context) =>
+                        ActivityFormPage(poReference: poReference),
                   ),
                 );
               },
@@ -267,3 +252,4 @@ class ActivityFormData {
     required this.formData,
   });
 }
+
