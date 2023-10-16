@@ -61,7 +61,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late TextEditingController surfaceTemperatureController = TextEditingController();
   late TextEditingController totalAreaRepairedController = TextEditingController();
   late TextEditingController productNameController = TextEditingController();
-  late TextEditingController resinController = TextEditingController();
+  late TextEditingController typeController = TextEditingController();
   late TextEditingController hardenerController = TextEditingController();
   late TextEditingController glassCarbonTapeController = TextEditingController();
   late TextEditingController topCoatController = TextEditingController();
@@ -83,7 +83,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late String peelPly = 'used';
   late String totalAreaRepaired = '0';
   late String productName = 'Loctite PC 7210-A';
-  late String resin = 'Loctite PC 7210-A';
+  late String type = 'Resin';
   late String hardener = 'Loctite PC 7210-B';
   late String glassCarbonTape = 'Loctite PC 5085';
   late String topCoat = 'Loctite PC 7333';
@@ -110,7 +110,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
     surfaceTemperatureController = TextEditingController();
     totalAreaRepairedController = TextEditingController();
     productNameController = TextEditingController();
-    resinController = TextEditingController();
+    typeController = TextEditingController();
     hardenerController = TextEditingController();
     glassCarbonTapeController = TextEditingController();
     topCoatController = TextEditingController();
@@ -155,7 +155,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
             'peelPly': 'used',
             'totalAreaRepaired': '0',
             'productName': 'Loctite PC 7210-A',
-            'resin': 'Loctite PC 7210-A',
+            'type': 'Resin',
             'hardener': 'Loctite PC 7210-B',
             'glassCarbonTape': 'Loctite PC 5085',
             'topCoat': 'Loctite PC 7333',
@@ -184,7 +184,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
           peelPlyController.text = existingForm['peelPly'];
           totalAreaRepairedController.text = existingForm['totalAreaRepaired'];
           productNameController.text = existingForm['productName'];
-          resinController.text = existingForm['resin'];
+          typeController.text = existingForm['type'];
           hardenerController.text = existingForm['hardener'];
           glassCarbonTapeController.text = existingForm['glassCarbonTape'];
           topCoatController.text = existingForm['topCoat'];
@@ -205,7 +205,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
           peelPly = existingForm['peelPly'] ?? 'used';
           totalAreaRepaired = existingForm['totalAreaRepaired'] ?? '0';
           productName = existingForm['productName'] ?? 'Loctite PC 7210-A';
-          resin = existingForm['resin'] ?? 'Loctite PC 7210-A';
+          type = existingForm['type'] ?? 'Resin';
           hardener = existingForm['hardener'] ?? 'Loctite PC 7210-B';
           glassCarbonTape =
               existingForm['glassCarbonTape'] ?? 'Loctite PC 5085';
@@ -478,13 +478,13 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
               // Row 5
               Row(
                 children: [
-                  // Resin Dropdown
+                  // Type Dropdown
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
                       child: DropdownButtonFormField<String>(
-                        value: resin,
-                        items: ['Loctite PC 7210-A', 'Loctite PC 7211-A']
+                        value: type,
+                        items: ['Resin', 'Hardener', 'Glass Carbon Tape', 'Top Coat']
                             .map<DropdownMenuItem<String>>(
                               (String value) =>
                               DropdownMenuItem<String>(
@@ -495,44 +495,36 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                             .toList(),
                         onChanged: (value) {
                           setState(() {
-                            resin = value!;
+                            type = value!;
                           });
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please select a Resin.';
+                            return 'Please select a Type.';
                           }
                           return null;
                         },
-                        decoration: const InputDecoration(labelText: 'Resin'),
+                        decoration: const InputDecoration(labelText: 'Type'),
                       ),
                     ),
                   ),
                   // Hardener Dropdown
                   Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: hardener,
-                      items: ['Loctite PC 7210-B', 'Loctite PC 7211-B']
-                          .map<DropdownMenuItem<String>>(
-                            (String value) =>
-                            DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            ),
-                      )
-                          .toList(),
+                    child: TextFormField(
+                      controller: productBatchNoController,
                       onChanged: (value) {
                         setState(() {
-                          hardener = value!;
+                          productBatchNo = value;
                         });
                       },
+                      decoration: const InputDecoration(
+                          labelText: 'Product batch no'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please select a Hardener.';
+                          return 'Please enter a valid Product batch no.';
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(labelText: 'Hardner'),
                     ),
                   ),
                 ],
@@ -545,58 +537,41 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                      child: DropdownButtonFormField<String>(
-                        value: glassCarbonTape,
-                        items: ['Loctite PC 5085', 'Loctite PC 5089']
-                            .map<DropdownMenuItem<String>>(
-                              (String value) =>
-                              DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              ),
-                        )
-                            .toList(),
+                      child: TextFormField(
+                        controller: productBatchNoController,
                         onChanged: (value) {
                           setState(() {
-                            glassCarbonTape = value!;
+                            productBatchNo = value;
                           });
                         },
+                        decoration: const InputDecoration(
+                            labelText: 'Product batch no'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please select a Glass Carbon Tape.';
+                            return 'Please enter a valid Product batch no.';
                           }
                           return null;
                         },
-                        decoration: const InputDecoration(
-                            labelText: 'Glass Carbon Tape'),
                       ),
                     ),
                   ),
                   // Top Coat Dropdown
                   Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: topCoat,
-                      items: ['Loctite PC 7333', 'Loctite PC 7443']
-                          .map<DropdownMenuItem<String>>(
-                            (String value) =>
-                            DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            ),
-                      )
-                          .toList(),
+                    child: TextFormField(
+                      controller: productBatchNoController,
                       onChanged: (value) {
                         setState(() {
-                          topCoat = value!;
+                          productBatchNo = value;
                         });
                       },
+                      decoration: const InputDecoration(
+                          labelText: 'Product batch no'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please select a Top Coat.';
+                          return 'Please enter a valid Product batch no.';
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(labelText: 'Top Coat'),
                     ),
                   ),
                 ],
@@ -872,7 +847,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       'peelPly': peelPly,
       'totalAreaRepaired': totalAreaRepaired,
       'productName': productName,
-      'resin': resin,
+      'type': type,
       'hardener': hardener,
       'glassCarbonTape': glassCarbonTape,
       'topCoat': topCoat,
