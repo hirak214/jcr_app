@@ -296,16 +296,16 @@ class _OngoingJobTileState extends State<OngoingJobTile> {
           ListTile(
             title: Row(
               children: [
-                Text('Installer Name: ${widget.customerName}'),
+                Text('Customer Name: ${widget.customerName}'),
                 SizedBox(width: 16),
-                Text('Supervisor Name: ${widget.location}'),
+                Text('Location: ${widget.location}'),
               ],
             ),
           ),
           ListTile(
             title: Row(
               children: [
-                Text('JCR Reference No: ${widget.jcrReference}'),
+                Text('JCR Ref No: ${widget.jcrReference}'),
                 SizedBox(width: 16),
                 ElevatedButton(
                   onPressed: widget.onPressed,
