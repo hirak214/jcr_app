@@ -16,8 +16,12 @@ class _DashboardState extends State<Dashboard> {
   String username = '';
   int ongoingJobCount = 0;
   int activityFormCount = 0;
+  int waitingApprovalCount = 0; // New count variable
+  int completedJobsCount = 0; // New count variable
   List<OngoingJob> ongoingJobs = [];
   List<ActivityFormData> activityForms = [];
+  List<WaitingApprovalData> waitingApprovalList = []; // New list for waiting approval
+  List<CompletedJobData> completedJobsList = []; // New list for completed jobs
 
   @override
   void initState() {
@@ -39,8 +43,21 @@ class _DashboardState extends State<Dashboard> {
   Future<void> refreshData() async {
     await loadOngoingJobs();
     await loadActivityForms();
+    await loadWaitingApproval(); // Load waiting approval data
+    await loadCompletedJobs(); // Load completed jobs data
   }
-// Function to load ongoing job data from form_data.json file
+
+  Future<void> loadWaitingApproval() async {
+    // Implement loading "Waiting Approval" data here
+    // This is similar to the loadOngoingJobs and loadActivityForms methods
+  }
+
+  Future<void> loadCompletedJobs() async {
+    // Implement loading "Completed Jobs" data here
+    // This is similar to the loadOngoingJobs and loadActivityForms methods
+  }
+
+  // Function to load ongoing job data from form_data.json file
   Future<void> loadOngoingJobs() async {
     try {
       final directory = await getExternalStorageDirectory();
@@ -128,14 +145,14 @@ class _DashboardState extends State<Dashboard> {
               return [
                 PopupMenuItem(
                   child: ListTile(
-                    leading: Icon(Icons.account_circle), // Add profile icon
+                    leading: Icon(Icons.account_circle),
                     title: Text(username),
                   ),
-                  enabled: false, // Disable user ID item
+                  enabled: false,
                 ),
                 PopupMenuItem(
                   child: ListTile(
-                    leading: Icon(Icons.logout), // Add icon to the left of Logout
+                    leading: Icon(Icons.logout),
                     title: Text('Logout'),
                   ),
                   value: 'logout',
@@ -144,17 +161,16 @@ class _DashboardState extends State<Dashboard> {
             },
             onSelected: (value) {
               if (value == 'logout') {
-                // Navigate to the login page
                 Navigator.pushReplacementNamed(context, '/');
               }
             },
           ),
         ],
-      ),      body: RefreshIndicator(
+      ),
+      body: RefreshIndicator(
         onRefresh: refreshData,
         child: Column(
           children: [
-            // Ongoing Jobs Card
             CardWithCount(
               title: 'Ongoing Jobs',
               count: ongoingJobCount,
@@ -167,9 +183,8 @@ class _DashboardState extends State<Dashboard> {
                 );
               },
             ),
-            // Pre-existing Forms Card
             CardWithCount(
-              title: 'Pre-existing Forms',
+              title: 'Pending Activity Forms',
               count: activityFormCount,
               onPressed: () {
                 Navigator.push(
@@ -178,6 +193,20 @@ class _DashboardState extends State<Dashboard> {
                     builder: (context) => ActivityFormsPage(activityForms: activityForms),
                   ),
                 );
+              },
+            ),
+            CardWithCount(
+              title: 'Waiting Approval', // New card title
+              count: waitingApprovalCount, // Use the count variable
+              onPressed: () {
+                // Implement navigation to the "Waiting Approval" page
+              },
+            ),
+            CardWithCount(
+              title: 'Completed Jobs', // New card title
+              count: completedJobsCount, // Use the count variable
+              onPressed: () {
+                // Implement navigation to the "Completed Jobs" page
               },
             ),
           ],
@@ -192,11 +221,17 @@ class _DashboardState extends State<Dashboard> {
             ),
           );
         },
-        child: Text('Start a Prework Form'),
+        child: Text('Start a Pre-Work Form'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
+}
+
+class CompletedJobData {
+}
+
+class WaitingApprovalData {
 }
 
 class CardWithCount extends StatelessWidget {
