@@ -231,14 +231,18 @@ class OngoingJobsPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final job = ongoingJobs[index];
           final poReference = job.poReference;
+          final formData = job.formData;
 
-          return ListTile(
-            title: Text('$poReference (Ongoing)'),
-            onTap: () {
+          return OngoingJobTile(
+            poReference: poReference,
+            installerName: formData['installer_name'],
+            supervisorName: formData['supervisor_name'],
+            jcrReference: formData['jcr_reference'],
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ActivityFormPage(poReference: poReference)
+                  builder: (context) => ActivityFormPage(poReference: poReference),
                 ),
               );
             },
@@ -249,31 +253,6 @@ class OngoingJobsPage extends StatelessWidget {
   }
 }
 
-// class JobDetailsPage extends StatelessWidget {
-//   final OngoingJob job;
-//
-//   JobDetailsPage({required this.job});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // Build your job details page using the provided 'job' data
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Job Details'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text('PO Reference: ${job.poReference}'),
-//             // You can display and edit other job details here
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class OngoingJob {
   final String poReference;
   final Map<String, dynamic> formData;
@@ -282,6 +261,69 @@ class OngoingJob {
     required this.poReference,
     required this.formData,
   });
+}
+
+class OngoingJobTile extends StatefulWidget {
+  final String poReference;
+  final String installerName;
+  final String supervisorName;
+  final String jcrReference;
+  final VoidCallback onPressed;
+
+  OngoingJobTile({
+    required this.poReference,
+    required this.installerName,
+    required this.supervisorName,
+    required this.jcrReference,
+    required this.onPressed,
+  });
+
+  @override
+  _OngoingJobTileState createState() => _OngoingJobTileState();
+}
+
+class _OngoingJobTileState extends State<OngoingJobTile> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5.0,
+      margin: EdgeInsets.all(16.0),
+      child: ExpansionTile(
+        title: Text(widget.poReference),
+        children: [
+          ListTile(
+            title: Row(
+              children: [
+                Text('Installer Name: ${widget.installerName}'),
+                SizedBox(width: 16),
+                Text('Supervisor Name: ${widget.supervisorName}'),
+              ],
+            ),
+          ),
+          ListTile(
+            title: Row(
+              children: [
+                Text('JCR Reference No: ${widget.jcrReference}'),
+                SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: widget.onPressed,
+                  child: Text('Start Activity Form'),
+                ),
+              ],
+            ),
+          ),
+        ],
+        onExpansionChanged: (expanded) {
+          setState(() {
+            _isExpanded = expanded;
+          });
+        },
+        initiallyExpanded: _isExpanded,
+      ),
+    );
+  }
 }
 
 class ActivityFormsPage extends StatelessWidget {
@@ -327,29 +369,3 @@ class ActivityFormData {
     required this.formData,
   });
 }
-//
-// class ActivityFormEditPage extends StatelessWidget {
-//   final ActivityFormData formData;
-//
-//   ActivityFormEditPage({required this.formData});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // Build your activity form edit page using the 'formData' data
-//     // You can access formData.poReference and formData.formData to display and edit details
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Edit Activity Form'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text('PO Reference: ${formData.poReference}'),
-//             // You can display and edit other activity form details here
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
