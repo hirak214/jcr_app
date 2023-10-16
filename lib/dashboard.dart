@@ -102,8 +102,36 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('JCR Dashboard'),
-      ),
-      body: RefreshIndicator(
+        actions: [
+          PopupMenuButton(
+            icon: Icon(Icons.account_circle),
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: Icon(Icons.account_circle), // Add profile icon
+                    title: Text('YourUserID'),
+                  ),
+                  enabled: false, // Disable user ID item
+                ),
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: Icon(Icons.logout), // Add icon to the left of Logout
+                    title: Text('Logout'),
+                  ),
+                  value: 'logout',
+                ),
+              ];
+            },
+            onSelected: (value) {
+              if (value == 'logout') {
+                // Navigate to the login page
+                Navigator.pushReplacementNamed(context, '/');
+              }
+            },
+          ),
+        ],
+      ),      body: RefreshIndicator(
         onRefresh: refreshData,
         child: Column(
           children: [
