@@ -55,6 +55,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late TextEditingController surfacePreparationController = TextEditingController();
   late TextEditingController expiryDateController = TextEditingController();
   late TextEditingController productBatchNoController = TextEditingController();
+  late TextEditingController productIdhNoController = TextEditingController();
+  late TextEditingController productQuantityController = TextEditingController();
   late TextEditingController consumptionController = TextEditingController();
   late TextEditingController curingTimeController = TextEditingController();
   late TextEditingController relativeHumidityController = TextEditingController();
@@ -88,6 +90,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late String glassCarbonTape = 'Loctite PC 5085';
   late String topCoat = 'Loctite PC 7333';
   late String productBatchNo = '';
+  late String productIdhNo = '';
+  late String productQuantity = '';
   late String consumption = '0';
   late String productMixing = 'Full Mixing';
   late String curingTime = '0';
@@ -104,6 +108,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
     surfacePreparationController = TextEditingController();
     expiryDateController = TextEditingController();
     productBatchNoController = TextEditingController();
+    productIdhNoController = TextEditingController();
+    productQuantityController = TextEditingController();
     consumptionController = TextEditingController();
     curingTimeController = TextEditingController();
     relativeHumidityController = TextEditingController();
@@ -160,6 +166,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
             'glassCarbonTape': 'Loctite PC 5085',
             'topCoat': 'Loctite PC 7333',
             'productBatchNo': '',
+            'productIdhNo': '',
+            'productQuantity': '',
             'expiryDate': '',
             'consumption': '0',
             'productMixing': 'Full Mixing',
@@ -189,6 +197,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
           glassCarbonTapeController.text = existingForm['glassCarbonTape'];
           topCoatController.text = existingForm['topCoat'];
           productBatchNoController.text = existingForm['productBatchNo'];
+          productIdhNoController.text = existingForm['productIdhNo'];
+          productQuantityController.text = existingForm['productQuantity'];
           expiryDateController.text = existingForm['expiryDate'];
           consumptionController.text = existingForm['consumption'];
           productMixingController.text = existingForm['productMixing'];
@@ -211,6 +221,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
               existingForm['glassCarbonTape'] ?? 'Loctite PC 5085';
           topCoat = existingForm['topCoat'] ?? 'Loctite PC 7333';
           productBatchNo = existingForm['productBatchNo'] ?? '';
+          productIdhNo = existingForm['productIdhNo'] ?? '';
+          productQuantity = existingForm['productQuantity'] ?? '';
           consumption = existingForm['consumption'] ?? '0';
           productMixing = existingForm['productMixing'] ?? 'Full Mixing';
           curingTime = existingForm['curingTime'] ?? '0';
@@ -508,20 +520,20 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       ),
                     ),
                   ),
-                  // Hardener Dropdown
+                  // Product IDH
                   Expanded(
                     child: TextFormField(
-                      controller: productBatchNoController,
+                      controller: productIdhNoController,
                       onChanged: (value) {
                         setState(() {
-                          productBatchNo = value;
+                          productIdhNo = value;
                         });
                       },
                       decoration: const InputDecoration(
-                          labelText: 'Product batch no'),
+                          labelText: 'Product IDH no.'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a valid Product batch no.';
+                          return 'Please enter a valid Product idh no.';
                         }
                         return null;
                       },
@@ -533,7 +545,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
               // Row 6
               Row(
                 children: [
-                  // Glass Carbon Tape Dropdown
+                  // Product Batch No
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
@@ -545,7 +557,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                           });
                         },
                         decoration: const InputDecoration(
-                            labelText: 'Product batch no'),
+                            labelText: 'Product batch no.'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a valid Product batch no.';
@@ -555,20 +567,20 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       ),
                     ),
                   ),
-                  // Top Coat Dropdown
+                  // Quantity
                   Expanded(
                     child: TextFormField(
-                      controller: productBatchNoController,
+                      controller: productQuantityController,
                       onChanged: (value) {
                         setState(() {
-                          productBatchNo = value;
+                          productQuantity = value;
                         });
                       },
                       decoration: const InputDecoration(
-                          labelText: 'Product batch no'),
+                          labelText: 'Quantity'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a valid Product batch no.';
+                          return 'Please enter a valid Quantity no.';
                         }
                         return null;
                       },
@@ -585,17 +597,17 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
                       child: TextFormField(
-                        controller: productBatchNoController,
+                        controller: curingTimeController,
                         onChanged: (value) {
                           setState(() {
-                            productBatchNo = value;
+                            curingTime = value;
                           });
                         },
                         decoration: const InputDecoration(
-                            labelText: 'Product batch no'),
+                            labelText: 'Curing time'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter a valid Product batch no.';
+                            return 'Please enter a valid Curing time.';
                           }
                           return null;
                         },
@@ -688,33 +700,6 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         }
                         return null;
                       },
-                    ),
-                  ),
-                ],
-              ),
-              // Row 9
-              Row(
-                children: [
-                  // Curing Time
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: TextFormField(
-                        controller: curingTimeController,
-                        onChanged: (value) {
-                          setState(() {
-                            curingTime = value;
-                          });
-                        },
-                        decoration: const InputDecoration(
-                            labelText: 'Curing time'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a valid Curing time.';
-                          }
-                          return null;
-                        },
-                      ),
                     ),
                   ),
                 ],
@@ -848,6 +833,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       'totalAreaRepaired': totalAreaRepaired,
       'productName': productName,
       'type': type,
+      'productIdhNo': productIdhNo,
+      'productQuantity': productQuantity,
       'hardener': hardener,
       'glassCarbonTape': glassCarbonTape,
       'topCoat': topCoat,
