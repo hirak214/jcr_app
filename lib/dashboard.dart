@@ -28,13 +28,12 @@ class _DashboardState extends State<Dashboard> {
     await loadOngoingJobs();
     await loadActivityForms();
   }
-
-  // Function to load ongoing job data from form_data.json file
+// Function to load ongoing job data from form_data.json file
   Future<void> loadOngoingJobs() async {
     try {
       final directory = await getExternalStorageDirectory();
       if (directory == null) {
-        return; // Handle error, unable to access storage directory
+        return; // Handle error, unable to access the storage directory
       }
 
       final filePath = '${directory.path}/form_data.json';
@@ -45,9 +44,13 @@ class _DashboardState extends State<Dashboard> {
         final List<dynamic> formDataList = json.decode(jsonData);
 
         ongoingJobs = formDataList.where((formData) {
-          // You can add a condition to check if this is an ongoing job
-          // For example, if formData['status'] == 'ongoing'
-          return true;
+            // Check if 'activity_started_flag' is false before adding
+            if (formData['activity_started_flag'] == false) {
+              final poReference = formData['poReference'];
+              return true;
+            }
+
+          return false;
         }).map((formData) {
           final poReference = formData['poReference'];
           return OngoingJob(
@@ -65,6 +68,7 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
+
   // Function to load activity form data from activity_form_data.json file
   Future<void> loadActivityForms() async {
     try {
@@ -80,7 +84,10 @@ class _DashboardState extends State<Dashboard> {
         final jsonData = await file.readAsString();
         final List<dynamic> formDataList = json.decode(jsonData);
 
-        activityForms = formDataList.map((formData) {
+        activityForms = formDataList.where((formData) {
+          // Check if 'activity_status' is "ongoing"
+          return formData['activity_status'] == 'ongoing';
+        }).map((formData) {
           final poReference = formData['poReference'];
           return ActivityFormData(
             poReference: poReference,

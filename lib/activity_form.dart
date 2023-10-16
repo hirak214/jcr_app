@@ -223,8 +223,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   @override
   Widget build(BuildContext context) {
 
-    // marking the flag
-    markPreworkAsStarted(widget.poReference);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -781,6 +780,10 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   ElevatedButton(
                     onPressed: () {
                       saveFormData();
+
+                      // marking the flag
+                      markPreworkAsStarted(widget.poReference);
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Form data saved successfully.'),
@@ -834,6 +837,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       'curingTime': curingTime,
       'imagesDuringJob': _pickedImageDuringJob?.path ?? '',
       'imagesAfterJob': _pickedImageAfterJob?.path ?? '',
+      'activity_status': "ongoing",
     };
   }
 
