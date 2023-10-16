@@ -779,11 +779,12 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
+                      final formData = getActivityFormData();
+                      formData['activity_status'] = "ongoing";
                       saveFormData();
 
                       // marking the flag
                       markPreworkAsStarted(widget.poReference);
-                      print("Marked completed");
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -796,16 +797,29 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                     },
                     child: const Text('Save'),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // The form is valid, you can handle submit action here
-                        // You can access form values using the variables defined above
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              // The form is valid, you can handle submit action here
+              // You can access form values using the variables defined above
 
-                      }
-                    },
-                    child: const Text('Submit'),
-                  ),
+              // Set 'activity_status' to "completed" in the form data
+              final formData = getActivityFormData();
+              formData['activity_status'] = "completed";
+
+              // Save the updated form data
+              saveFormData();
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Form data submitted successfully.'),
+                ),
+              );
+            }
+          },
+          child: const Text('Submit'),
+
+      ),
                 ],
               ),
             ],
@@ -838,7 +852,6 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       'curingTime': curingTime,
       'imagesDuringJob': _pickedImageDuringJob?.path ?? '',
       'imagesAfterJob': _pickedImageAfterJob?.path ?? '',
-      'activity_status': "ongoing",
     };
   }
 
