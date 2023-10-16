@@ -488,6 +488,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                           'numberOfLayers': numberOfLayers,
                           'repairDimensions': repairDimensions,
                           'applicationType': applicationType,
+                          'activity_started_flag': false,
                         };
                         print('Form data: $formData');
                         saveToJsonFile(formData);

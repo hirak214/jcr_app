@@ -4,6 +4,35 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 
+Future<void> markPreworkAsStarted(String poReference) async {
+  try {
+    final directory = await getExternalStorageDirectory();
+    if (directory == null) {
+      return; // Handle error, unable to access storage directory
+    }
+
+    final filePath = '${directory.path}/form_data.json';
+    final file = File(filePath);
+
+    if (await file.exists()) {
+      final jsonData = await file.readAsString();
+      final List<dynamic> formDataList = json.decode(jsonData);
+
+      // Search for the prework with the matching JCR number
+      for (var formData in formDataList) {
+        if (formData['jcrNumber'] == poReference) {
+          formData['activity_started_flag'] = true;
+        }
+      }
+
+      // Write the updated data back to the file
+      await file.writeAsString(json.encode(formDataList));
+    }
+  } catch (e) {
+    print('Error marking prework as started: $e');
+  }
+}
+
 class ActivityFormPage extends StatefulWidget {
   final String poReference;
 
@@ -19,8 +48,10 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   File? _pickedImageDuringJob = null;
   File? _pickedImageAfterJob = null;
-  late TextEditingController jobDateController = TextEditingController();
 
+  // late Editing Controllers
+  // These are used to initialize the controllers
+  late TextEditingController jobDateController = TextEditingController();
   late TextEditingController surfacePreparationController = TextEditingController();
   late TextEditingController expiryDateController = TextEditingController();
   late TextEditingController productBatchNoController = TextEditingController();
@@ -42,6 +73,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   late TextEditingController imagesDuringJobController = TextEditingController();
   late TextEditingController imagesAfterJobController = TextEditingController();
 
+  // These are default values
+  // These are the values set when the activity form is first created
   late String preCleaning = 'Solvent Cleaning';
   late String surfacePreparationMethod = 'Solvent Cleaning';
   late String relativeHumidity = '0';
@@ -64,6 +97,9 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
   @override
   void initState() {
     super.initState();
+    // late Editing Controllers
+    // These are used to initialize the controllers
+    // The values are replaced from null to the ones that are previously saved
     jobDateController = TextEditingController();
     surfacePreparationController = TextEditingController();
     expiryDateController = TextEditingController();
@@ -86,6 +122,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
     imagesDuringJobController = TextEditingController();
     imagesAfterJobController = TextEditingController();
 
+    // loading the previous data from database
     loadExistingFormData();
 
 
@@ -182,8 +219,13 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+
+    // marking the flag
+    markPreworkAsStarted(widget.poReference);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Activity Form for ${widget.poReference}'), // Use the poReference in the title
