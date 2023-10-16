@@ -235,9 +235,9 @@ class OngoingJobsPage extends StatelessWidget {
 
           return OngoingJobTile(
             poReference: poReference,
-            installerName: formData['installer_name'],
-            supervisorName: formData['supervisor_name'],
-            jcrReference: formData['jcr_reference'],
+            customerName: formData['customerName'],
+            location: formData['location'],
+            jcrReference: formData['jcrRefNo'],
             onPressed: () {
               Navigator.push(
                 context,
@@ -265,15 +265,15 @@ class OngoingJob {
 
 class OngoingJobTile extends StatefulWidget {
   final String poReference;
-  final String installerName;
-  final String supervisorName;
+  final String customerName;
+  final String location;
   final String jcrReference;
   final VoidCallback onPressed;
 
   OngoingJobTile({
     required this.poReference,
-    required this.installerName,
-    required this.supervisorName,
+    required this.customerName,
+    required this.location,
     required this.jcrReference,
     required this.onPressed,
   });
@@ -296,9 +296,9 @@ class _OngoingJobTileState extends State<OngoingJobTile> {
           ListTile(
             title: Row(
               children: [
-                Text('Installer Name: ${widget.installerName}'),
+                Text('Installer Name: ${widget.customerName}'),
                 SizedBox(width: 16),
-                Text('Supervisor Name: ${widget.supervisorName}'),
+                Text('Supervisor Name: ${widget.location}'),
               ],
             ),
           ),
