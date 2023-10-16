@@ -5,8 +5,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-
-
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -16,12 +14,12 @@ class _DashboardState extends State<Dashboard> {
   String username = '';
   int ongoingJobCount = 0;
   int activityFormCount = 0;
-  int waitingApprovalCount = 0; // New count variable
-  int completedJobsCount = 0; // New count variable
+  int waitingApprovalCount = 0;
+  int completedJobsCount = 0;
   List<OngoingJob> ongoingJobs = [];
   List<ActivityFormData> activityForms = [];
-  List<WaitingApprovalData> waitingApprovalList = []; // New list for waiting approval
-  List<CompletedJobData> completedJobsList = []; // New list for completed jobs
+  List<WaitingApprovalData> waitingApprovalList = [];
+  List<CompletedJobData> completedJobsList = [];
 
   @override
   void initState() {
@@ -33,7 +31,6 @@ class _DashboardState extends State<Dashboard> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // Receive the username argument passed from LoginPage
     final routeArgs = ModalRoute.of(context)?.settings.arguments;
     if (routeArgs != null && routeArgs is String) {
       username = routeArgs;
@@ -43,18 +40,78 @@ class _DashboardState extends State<Dashboard> {
   Future<void> refreshData() async {
     await loadOngoingJobs();
     await loadActivityForms();
-    await loadWaitingApproval(); // Load waiting approval data
-    await loadCompletedJobs(); // Load completed jobs data
+    await loadWaitingApproval();
+    await loadCompletedJobs();
   }
 
   Future<void> loadWaitingApproval() async {
-    // Implement loading "Waiting Approval" data here
-    // This is similar to the loadOngoingJobs and loadActivityForms methods
+    try {
+      final directory = await getExternalStorageDirectory();
+      if (directory == null) {
+        return; // Handle error, unable to access the storage directory
+      }
+
+      final filePath = '${directory.path}/activity_form_data.json'; // Update with the correct file path
+      final file = File(filePath);
+
+      if (await file.exists()) {
+        final jsonData = await file.readAsString();
+        final List<dynamic> formDataList = json.decode(jsonData);
+
+        waitingApprovalList = formDataList.where((formData) {
+          // Implement your condition for waiting approval data
+          // For example, check if 'activity_status' is "waiting_approval"
+          return formData['activity_status'] == 'waiting_approval';
+        }).map((formData) {
+          final poReference = formData['poReference'];
+          return WaitingApprovalData(
+            poReference: poReference,
+            formData: formData,
+          );
+        }).toList();
+
+        setState(() {
+          waitingApprovalCount = waitingApprovalList.length;
+        });
+      }
+    } catch (e) {
+      print('Error loading waiting approval data: $e');
+    }
   }
 
   Future<void> loadCompletedJobs() async {
-    // Implement loading "Completed Jobs" data here
-    // This is similar to the loadOngoingJobs and loadActivityForms methods
+    try {
+      final directory = await getExternalStorageDirectory();
+      if (directory == null) {
+        return; // Handle error, unable to access the storage directory
+      }
+
+      final filePath = '${directory.path}/activity_form_data.json'; // Update with the correct file path
+      final file = File(filePath);
+
+      if (await file.exists()) {
+        final jsonData = await file.readAsString();
+        final List<dynamic> formDataList = json.decode(jsonData);
+
+        completedJobsList = formDataList.where((formData) {
+          // Implement your condition for completed jobs data
+          // For example, check if 'activity_status' is "completed"
+          return formData['activity_status'] == 'completed';
+        }).map((formData) {
+          final poReference = formData['poReference'];
+          return CompletedJobData(
+            poReference: poReference,
+            formData: formData,
+          );
+        }).toList();
+
+        setState(() {
+          completedJobsCount = completedJobsList.length;
+        });
+      }
+    } catch (e) {
+      print('Error loading completed jobs: $e');
+    }
   }
 
   // Function to load ongoing job data from form_data.json file
@@ -73,11 +130,11 @@ class _DashboardState extends State<Dashboard> {
         final List<dynamic> formDataList = json.decode(jsonData);
 
         ongoingJobs = formDataList.where((formData) {
-            // Check if 'activity_started_flag' is false before adding
-            if (formData['activity_started_flag'] == false) {
-              final poReference = formData['poReference'];
-              return true;
-            }
+          // Check if 'activity_started_flag' is false before adding
+          if (formData['activity_started_flag'] == false) {
+            final poReference = formData['poReference'];
+            return true;
+          }
 
           return false;
         }).map((formData) {
@@ -196,15 +253,15 @@ class _DashboardState extends State<Dashboard> {
               },
             ),
             CardWithCount(
-              title: 'Waiting Approval', // New card title
-              count: waitingApprovalCount, // Use the count variable
+              title: 'Waiting Approval',
+              count: waitingApprovalCount,
               onPressed: () {
                 // Implement navigation to the "Waiting Approval" page
               },
             ),
             CardWithCount(
-              title: 'Completed Jobs', // New card title
-              count: completedJobsCount, // Use the count variable
+              title: 'Completed Jobs',
+              count: completedJobsCount,
               onPressed: () {
                 // Implement navigation to the "Completed Jobs" page
               },
@@ -229,9 +286,23 @@ class _DashboardState extends State<Dashboard> {
 }
 
 class CompletedJobData {
+  final String poReference;
+  final Map<String, dynamic> formData;
+
+  CompletedJobData({
+    required this.poReference,
+    required this.formData,
+  });
 }
 
 class WaitingApprovalData {
+  final String poReference;
+  final Map<String, dynamic> formData;
+
+  WaitingApprovalData({
+    required this.poReference,
+    required this.formData,
+  });
 }
 
 class CardWithCount extends StatelessWidget {
@@ -396,7 +467,7 @@ class ActivityFormsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ActivityFormPage(poReference: poReference)
+                    builder: (context) => ActivityFormPage(poReference: poReference)
                 ),
               );
             },

@@ -795,6 +795,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       // Handle save action here without validation
                       // You can access form values using the variables defined above
                     },
+
                     child: const Text('Save'),
                   ),
         ElevatedButton(
