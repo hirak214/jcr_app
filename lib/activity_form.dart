@@ -20,7 +20,7 @@ Future<void> markPreworkAsStarted(String poReference) async {
 
       // Search for the prework with the matching JCR number
       for (var formData in formDataList) {
-        if (formData['jcrNumber'] == poReference) {
+        if (formData['poReference'] == poReference) {
           formData['activity_started_flag'] = true;
         }
       }
@@ -783,6 +783,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
 
                       // marking the flag
                       markPreworkAsStarted(widget.poReference);
+                      print("Marked completed");
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
