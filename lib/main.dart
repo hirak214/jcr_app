@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dashboard.dart';
-import 'activity_form.dart';
+import 'login_page.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: Dashboard(),
+      initialRoute: '/', // Define the initial route
+      routes: {
+        '/': (context) => LoginPage(), // Map the root route to the LoginPage
+        '/dashboard': (context) => Dashboard(),
+      },
     );
   }
 }
