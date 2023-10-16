@@ -124,8 +124,6 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
 
     // loading the previous data from database
     loadExistingFormData();
-
-
   }
 
   Future<void> loadExistingFormData() async {
@@ -145,9 +143,11 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
         // Find the existing form data by matching the poReference
         final existingForm = formDataList.firstWhere(
               (formData) => formData['poReference'] == widget.poReference,
-          orElse: () => {
+          orElse: () =>
+          {
             'jobDate': '',
-            'preCleaning': 'Solvent Cleaning', // Set default values here
+            'preCleaning': 'Solvent Cleaning',
+            // Set default values here
             'surfacePreparationMethod': '',
             'relativeHumidity': '0',
             'surfaceTemperature': '0',
@@ -164,7 +164,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
             'consumption': '0',
             'productMixing': 'Full Mixing',
             'curingTime': '0',
-            'poReference': widget.poReference, // Include the poReference in the form data
+            'poReference': widget.poReference,
+            // Include the poReference in the form data
             'imagesDuringJob': [],
             'imagesAfterJob': [],
             // Add default values for other form fields
@@ -173,10 +174,12 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
 
         setState(() {
           jobDateController.text = existingForm['jobDate'];
-          surfacePreparationController.text = existingForm['surfacePreparationMethod'];
+          surfacePreparationController.text =
+          existingForm['surfacePreparationMethod'];
           preCleaningController.text = existingForm['preCleaning'];
           relativeHumidityController.text = existingForm['relativeHumidity'];
-          surfaceTemperatureController.text = existingForm['surfaceTemperature'];
+          surfaceTemperatureController.text =
+          existingForm['surfaceTemperature'];
           impregnationController.text = existingForm['impregnation'];
           peelPlyController.text = existingForm['peelPly'];
           totalAreaRepairedController.text = existingForm['totalAreaRepaired'];
@@ -192,25 +195,28 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
           curingTimeController.text = existingForm['curingTime'];
 
           // Set the default values for other form fields
-          surfacePreparationMethod = existingForm['surfacePreparationMethod'] ?? 'Solvent Cleaning';
+          surfacePreparationMethod =
+              existingForm['surfacePreparationMethod'] ?? 'Solvent Cleaning';
           preCleaning = existingForm['preCleaning'] ?? 'Solvent Cleaning';
           relativeHumidity = existingForm['relativeHumidity'] ?? '0';
           surfaceTemperature = existingForm['surfaceTemperature'] ?? '0';
-          impregnation = existingForm['impregnation'] ?? 'Yes (with spike roller)';
+          impregnation =
+              existingForm['impregnation'] ?? 'Yes (with spike roller)';
           peelPly = existingForm['peelPly'] ?? 'used';
           totalAreaRepaired = existingForm['totalAreaRepaired'] ?? '0';
           productName = existingForm['productName'] ?? 'Loctite PC 7210-A';
           resin = existingForm['resin'] ?? 'Loctite PC 7210-A';
           hardener = existingForm['hardener'] ?? 'Loctite PC 7210-B';
-          glassCarbonTape = existingForm['glassCarbonTape'] ?? 'Loctite PC 5085';
+          glassCarbonTape =
+              existingForm['glassCarbonTape'] ?? 'Loctite PC 5085';
           topCoat = existingForm['topCoat'] ?? 'Loctite PC 7333';
           productBatchNo = existingForm['productBatchNo'] ?? '';
           consumption = existingForm['consumption'] ?? '0';
           productMixing = existingForm['productMixing'] ?? 'Full Mixing';
           curingTime = existingForm['curingTime'] ?? '0';
           selectedJobDate = DateTime.tryParse(existingForm['jobDate'] ?? '');
-          selectedExpiryDate = DateTime.tryParse(existingForm['expiryDate'] ?? '');
-
+          selectedExpiryDate =
+              DateTime.tryParse(existingForm['expiryDate'] ?? '');
         });
       }
     } catch (e) {
@@ -222,12 +228,10 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Activity Form for ${widget.poReference}'), // Use the poReference in the title
+        title: Text('Activity Form for ${widget
+            .poReference}'), // Use the poReference in the title
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -248,47 +252,54 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: TextFormField(
-                      controller: TextEditingController(
-                        text: selectedJobDate?.toLocal().toString().split(' ')[0] ?? '',
-                      ),
-                      readOnly: true,
-                      onTap: () async {
-                        final currentDate = DateTime.now();
-                        final selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: selectedJobDate ?? currentDate,
-                          firstDate: currentDate.subtract(Duration(days: 365)),
-                          lastDate: currentDate.add(Duration(days: 365)),
-                        );
+                      child: TextFormField(
+                        controller: TextEditingController(
+                          text: selectedJobDate?.toLocal().toString().split(
+                              ' ')[0] ?? '',
+                        ),
+                        readOnly: true,
+                        onTap: () async {
+                          final currentDate = DateTime.now();
+                          final selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: selectedJobDate ?? currentDate,
+                            firstDate: currentDate.subtract(
+                                Duration(days: 365)),
+                            lastDate: currentDate.add(Duration(days: 365)),
+                          );
 
-                        if (selectedDate != null) {
-                          setState(() {
-                            selectedJobDate = selectedDate;
-                          });
-                        }
-                      },
-                      decoration: InputDecoration(labelText: 'Job Date'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Job Date';
-                        }
-                        // You can add additional date format validation here
-                        return null;
-                      },
+                          if (selectedDate != null) {
+                            setState(() {
+                              selectedJobDate = selectedDate;
+                            });
+                          }
+                        },
+                        decoration: InputDecoration(labelText: 'Job Date'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Job Date';
+                          }
+                          // You can add additional date format validation here
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
                   ),
                   // Pre Cleaning Dropdown
                   Expanded(
                     child: DropdownButtonFormField<String>(
                       value: preCleaning,
-                      items: ['Solvent Cleaning', 'Water Jet Cleaning', 'Chipping']
+                      items: [
+                        'Solvent Cleaning',
+                        'Water Jet Cleaning',
+                        'Chipping'
+                      ]
                           .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
+                            (String value) =>
+                            DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
                       )
                           .toList(),
                       onChanged: (value) {
@@ -296,7 +307,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                           preCleaning = value!;
                         });
                       },
-                      decoration: const InputDecoration(labelText: 'Pre-Cleaning'),
+                      decoration: const InputDecoration(
+                          labelText: 'Pre-Cleaning'),
                     ),
                   ),
                 ],
@@ -308,23 +320,24 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: TextFormField(
-                      controller: surfacePreparationController,
-                      onChanged: (value) {
-                        setState(() {
-                          surfacePreparationMethod = value;
-                        });
-                      },
-                      decoration:
-                      const InputDecoration(labelText: 'Surface Preparation method'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a valid Surface Preparation method.';
-                        }
-                        return null;
-                      },
+                      child: TextFormField(
+                        controller: surfacePreparationController,
+                        onChanged: (value) {
+                          setState(() {
+                            surfacePreparationMethod = value;
+                          });
+                        },
+                        decoration:
+                        const InputDecoration(
+                            labelText: 'Surface Preparation method'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid Surface Preparation method.';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
                   ),
                   // Relative Humidity
                   Expanded(
@@ -337,13 +350,15 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       },
                       keyboardType: TextInputType.number,
                       decoration:
-                      const InputDecoration(labelText: 'Relative Humidity in %'),
+                      const InputDecoration(
+                          labelText: 'Relative Humidity in %'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a valid Relative Humidity.';
                         }
                         final numValue = int.tryParse(value);
-                        if (numValue == null || numValue < 1 || numValue > 100) {
+                        if (numValue == null || numValue < 1 ||
+                            numValue > 100) {
                           return 'Please enter a number between 1 and 100.';
                         }
                         return null;
@@ -359,23 +374,24 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: TextFormField(
-                      controller: surfaceTemperatureController,
-                      onChanged: (value) {
-                        setState(() {
-                          surfaceTemperature = value;
-                        });
-                      },
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Surface Temperature'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a valid Surface Temperature.';
-                        }
-                        return null;
-                      },
+                      child: TextFormField(
+                        controller: surfaceTemperatureController,
+                        onChanged: (value) {
+                          setState(() {
+                            surfaceTemperature = value;
+                          });
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                            labelText: 'Surface Temperature'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid Surface Temperature.';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
                   ),
                   // Impregnation Dropdown
                   Expanded(
@@ -383,10 +399,11 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       value: impregnation,
                       items: ['Yes (with spike roller)', 'No']
                           .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
+                            (String value) =>
+                            DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
                       )
                           .toList(),
                       onChanged: (value) {
@@ -394,7 +411,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                           impregnation = value!;
                         });
                       },
-                      decoration: const InputDecoration(labelText: 'Impregnation'),
+                      decoration: const InputDecoration(
+                          labelText: 'Impregnation'),
                     ),
                   ),
                 ],
@@ -406,24 +424,26 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: DropdownButtonFormField<String>(
-                      value: peelPly,
-                      items: ['used', 'not used']
-                          .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
-                      )
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          peelPly = value!;
-                        });
-                      },
-                      decoration: const InputDecoration(labelText: 'Peel Ply'),
+                      child: DropdownButtonFormField<String>(
+                        value: peelPly,
+                        items: ['used', 'not used']
+                            .map<DropdownMenuItem<String>>(
+                              (String value) =>
+                              DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              ),
+                        )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            peelPly = value!;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                            labelText: 'Peel Ply'),
+                      ),
                     ),
-                  ),
                   ),
                   // Total Area Repaired
                   Expanded(
@@ -435,7 +455,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         });
                       },
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Total area repaired'),
+                      decoration: const InputDecoration(
+                          labelText: 'Total area repaired'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a valid Total area repaired.';
@@ -461,30 +482,31 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: DropdownButtonFormField<String>(
-                      value: resin,
-                      items: ['Loctite PC 7210-A', 'Loctite PC 7211-A']
-                          .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
-                      )
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          resin = value!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a Resin.';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(labelText: 'Resin'),
+                      child: DropdownButtonFormField<String>(
+                        value: resin,
+                        items: ['Loctite PC 7210-A', 'Loctite PC 7211-A']
+                            .map<DropdownMenuItem<String>>(
+                              (String value) =>
+                              DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              ),
+                        )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            resin = value!;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a Resin.';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(labelText: 'Resin'),
+                      ),
                     ),
-                  ),
                   ),
                   // Hardener Dropdown
                   Expanded(
@@ -492,10 +514,11 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       value: hardener,
                       items: ['Loctite PC 7210-B', 'Loctite PC 7211-B']
                           .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
+                            (String value) =>
+                            DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
                       )
                           .toList(),
                       onChanged: (value) {
@@ -522,30 +545,32 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: DropdownButtonFormField<String>(
-                      value: glassCarbonTape,
-                      items: ['Loctite PC 5085', 'Loctite PC 5089']
-                          .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
-                      )
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          glassCarbonTape = value!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a Glass Carbon Tape.';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(labelText: 'Glass Carbon Tape'),
+                      child: DropdownButtonFormField<String>(
+                        value: glassCarbonTape,
+                        items: ['Loctite PC 5085', 'Loctite PC 5089']
+                            .map<DropdownMenuItem<String>>(
+                              (String value) =>
+                              DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              ),
+                        )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            glassCarbonTape = value!;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a Glass Carbon Tape.';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                            labelText: 'Glass Carbon Tape'),
+                      ),
                     ),
-                  ),
                   ),
                   // Top Coat Dropdown
                   Expanded(
@@ -553,10 +578,11 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       value: topCoat,
                       items: ['Loctite PC 7333', 'Loctite PC 7443']
                           .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
+                            (String value) =>
+                            DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
                       )
                           .toList(),
                       onChanged: (value) {
@@ -583,22 +609,23 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: TextFormField(
-                      controller: productBatchNoController,
-                      onChanged: (value) {
-                        setState(() {
-                          productBatchNo = value;
-                        });
-                      },
-                      decoration: const InputDecoration(labelText: 'Product batch no'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a valid Product batch no.';
-                        }
-                        return null;
-                      },
+                      child: TextFormField(
+                        controller: productBatchNoController,
+                        onChanged: (value) {
+                          setState(() {
+                            productBatchNo = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                            labelText: 'Product batch no'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid Product batch no.';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
                   ),
                   // Expiry Date Picker
                   Expanded(
@@ -642,22 +669,23 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: TextFormField(
-                      controller: consumptionController,
-                      onChanged: (value) {
-                        setState(() {
-                          consumption = value;
-                        });
-                      },
-                      decoration: const InputDecoration(labelText: 'Consumption'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a valid Consumption.';
-                        }
-                        return null;
-                      },
+                      child: TextFormField(
+                        controller: consumptionController,
+                        onChanged: (value) {
+                          setState(() {
+                            consumption = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                            labelText: 'Consumption'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid Consumption.';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
                   ),
                   // Product Mixing Dropdown
                   Expanded(
@@ -665,10 +693,11 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       value: productMixing,
                       items: ['Full Mixing', 'Part Mixing']
                           .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
+                            (String value) =>
+                            DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
                       )
                           .toList(),
                       onChanged: (value) {
@@ -676,7 +705,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                           productMixing = value!;
                         });
                       },
-                      decoration: const InputDecoration(labelText: 'Product Mixing'),
+                      decoration: const InputDecoration(
+                          labelText: 'Product Mixing'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please select a Product mixing option.';
@@ -694,22 +724,23 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                    child: TextFormField(
-                      controller: curingTimeController,
-                      onChanged: (value) {
-                        setState(() {
-                          curingTime = value;
-                        });
-                      },
-                      decoration: const InputDecoration(labelText: 'Curing time'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a valid Curing time.';
-                        }
-                        return null;
-                      },
+                      child: TextFormField(
+                        controller: curingTimeController,
+                        onChanged: (value) {
+                          setState(() {
+                            curingTime = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                            labelText: 'Curing time'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid Curing time.';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
                   ),
                 ],
               ),
@@ -779,9 +810,10 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      final formData = getActivityFormData();
-                      formData['activity_status'] = "ongoing";
-                      saveFormData();
+
+                      Map<String, dynamic> yourFormData = getActivityFormData(); // Replace with your actual data
+                      yourFormData['activity_status'] = "ongoing";
+                      saveFormData(yourFormData);
 
                       // marking the flag
                       markPreworkAsStarted(widget.poReference);
@@ -798,29 +830,27 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
 
                     child: const Text('Save'),
                   ),
-        ElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              // The form is valid, you can handle submit action here
-              // You can access form values using the variables defined above
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // The form is valid, you can handle submit action here
+                        // You can access form values using the variables defined above
 
-              // Set 'activity_status' to "completed" in the form data
-              final formData = getActivityFormData();
-              formData['activity_status'] = "completed";
+                        // Set 'activity_status' to "completed" in the form data
+                        Map<String, dynamic> yourFormData = getActivityFormData(); // Replace with your actual data
+                        yourFormData['activity_status'] = "completed";
+                        saveFormData(yourFormData);
 
-              // Save the updated form data
-              saveFormData();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Form data submitted successfully.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('Submit'),
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Form data submitted successfully.'),
-                ),
-              );
-            }
-          },
-          child: const Text('Submit'),
-
-      ),
+                  ),
                 ],
               ),
             ],
@@ -847,7 +877,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       'glassCarbonTape': glassCarbonTape,
       'topCoat': topCoat,
       'productBatchNo': productBatchNo,
-      'expiryDate': selectedExpiryDate?.toLocal().toString().split(' ')[0] ?? '',
+      'expiryDate': selectedExpiryDate?.toLocal().toString().split(' ')[0] ??
+          '',
       'consumption': consumption,
       'productMixing': productMixing,
       'curingTime': curingTime,
@@ -856,7 +887,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
     };
   }
 
-  Future<void> saveFormData() async {
+  Future<void> saveFormData(Map<String, dynamic> formData) async {
     try {
       final directory = await getExternalStorageDirectory();
       if (directory == null) {
@@ -881,9 +912,9 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
 
       // Add or update the form data
       if (existingIndex != -1) {
-        formDataList[existingIndex] = getActivityFormData();
+        formDataList[existingIndex] = formData;
       } else {
-        formDataList.add(getActivityFormData());
+        formDataList.add(formData);
       }
 
       // Write the updated data back to the file
