@@ -54,6 +54,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
               Row(
                 children: [
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       readOnly: true,
                       initialValue: 'S Bharmappa',
@@ -63,8 +65,11 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         labelStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
+                    ),
                   ),
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       readOnly: true,
                       initialValue: 'HK1210',
@@ -73,6 +78,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         enabled: false,
                         labelStyle: TextStyle(color: Colors.grey),
                       ),
+                    ),
                     ),
                   ),
                   Expanded(
@@ -91,6 +97,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
               Row(
                 children: [
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       controller: poReferenceController,
                       decoration: InputDecoration(labelText: 'PO Reference'),
@@ -100,6 +108,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         }
                         return null;
                       },
+                    ),
                     ),
                   ),
                   Expanded(
@@ -165,6 +174,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
               Row(
                 children: [
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       onChanged: (value) {
                         setState(() {
@@ -178,6 +189,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         }
                         return null;
                       },
+                    ),
                     ),
                   ),
                   Expanded(
@@ -201,6 +213,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
               Row(
                 children: [
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       onChanged: (value) {
                         setState(() {
@@ -214,6 +228,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         }
                         return null;
                       },
+                    ),
                     ),
                   ),
                   Expanded(
@@ -238,6 +253,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
               Row(
                 children: [
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       onChanged: (value) {
                         setState(() {
@@ -251,6 +268,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         }
                         return null;
                       },
+                    ),
                     ),
                   ),
                   Expanded(
@@ -286,6 +304,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
               Row(
                 children: [
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: DropdownButtonFormField<String>(
                       value: defectType,
                       items: ['Type-A', 'Type-B', 'Type-C', 'Type-D']
@@ -311,6 +331,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                       },
                     ),
                   ),
+                  ),
                   Expanded(
                     child: TextFormField(
                       onChanged: (value) {
@@ -332,6 +353,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
               Row(
                 children: [
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: DropdownButtonFormField<String>(
                       value: outputSheet,
                       items: ['yes', 'no']
@@ -356,6 +379,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         return null;
                       },
                     ),
+                  ),
                   ),
                   Expanded(
                     child: TextFormField(
@@ -383,6 +407,8 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
               Row(
                 children: [
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       onChanged: (value) {
                         setState(() {
@@ -398,6 +424,7 @@ class _PreWorkFormPageState extends State<PreWorkFormPage> {
                         return null;
                       },
                     ),
+                  ),
                   ),
                   Expanded(
                     child: DropdownButtonFormField<String>(

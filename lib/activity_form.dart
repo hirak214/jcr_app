@@ -247,6 +247,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Job Date Picker
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       controller: TextEditingController(
                         text: selectedJobDate?.toLocal().toString().split(' ')[0] ?? '',
@@ -277,6 +279,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       },
                     ),
                   ),
+                  ),
                   // Pre Cleaning Dropdown
                   Expanded(
                     child: DropdownButtonFormField<String>(
@@ -304,6 +307,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Surface Preparation Method
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       controller: surfacePreparationController,
                       onChanged: (value) {
@@ -320,6 +325,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         return null;
                       },
                     ),
+                  ),
                   ),
                   // Relative Humidity
                   Expanded(
@@ -352,6 +358,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Surface Temperature
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       controller: surfaceTemperatureController,
                       onChanged: (value) {
@@ -368,6 +376,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         return null;
                       },
                     ),
+                  ),
                   ),
                   // Impregnation Dropdown
                   Expanded(
@@ -396,6 +405,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Peel Ply Dropdown
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: DropdownButtonFormField<String>(
                       value: peelPly,
                       items: ['used', 'not used']
@@ -413,6 +424,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       },
                       decoration: const InputDecoration(labelText: 'Peel Ply'),
                     ),
+                  ),
                   ),
                   // Total Area Repaired
                   Expanded(
@@ -448,6 +460,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Resin Dropdown
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: DropdownButtonFormField<String>(
                       value: resin,
                       items: ['Loctite PC 7210-A', 'Loctite PC 7211-A']
@@ -471,6 +485,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       },
                       decoration: const InputDecoration(labelText: 'Resin'),
                     ),
+                  ),
                   ),
                   // Hardener Dropdown
                   Expanded(
@@ -506,6 +521,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Glass Carbon Tape Dropdown
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: DropdownButtonFormField<String>(
                       value: glassCarbonTape,
                       items: ['Loctite PC 5085', 'Loctite PC 5089']
@@ -529,6 +546,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                       },
                       decoration: const InputDecoration(labelText: 'Glass Carbon Tape'),
                     ),
+                  ),
                   ),
                   // Top Coat Dropdown
                   Expanded(
@@ -564,6 +582,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Product Batch No
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       controller: productBatchNoController,
                       onChanged: (value) {
@@ -579,6 +599,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         return null;
                       },
                     ),
+                  ),
                   ),
                   // Expiry Date Picker
                   Expanded(
@@ -620,6 +641,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Consumption
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       controller: consumptionController,
                       onChanged: (value) {
@@ -635,6 +658,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         return null;
                       },
                     ),
+                  ),
                   ),
                   // Product Mixing Dropdown
                   Expanded(
@@ -669,6 +693,8 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                 children: [
                   // Curing Time
                   Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
                     child: TextFormField(
                       controller: curingTimeController,
                       onChanged: (value) {
@@ -684,6 +710,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
                         return null;
                       },
                     ),
+                  ),
                   ),
                 ],
               ),
