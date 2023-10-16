@@ -13,6 +13,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  String username = '';
   int ongoingJobCount = 0;
   int activityFormCount = 0;
   List<OngoingJob> ongoingJobs = [];
@@ -22,6 +23,17 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     refreshData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Receive the username argument passed from LoginPage
+    final routeArgs = ModalRoute.of(context)?.settings.arguments;
+    if (routeArgs != null && routeArgs is String) {
+      username = routeArgs;
+    }
   }
 
   Future<void> refreshData() async {
@@ -117,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
                 PopupMenuItem(
                   child: ListTile(
                     leading: Icon(Icons.account_circle), // Add profile icon
-                    title: Text('YourUserID'),
+                    title: Text(username),
                   ),
                   enabled: false, // Disable user ID item
                 ),

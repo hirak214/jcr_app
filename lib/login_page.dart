@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                 final username = usernameController.text;
                 final password = passwordController.text;
                 if (username.isNotEmpty && password.isNotEmpty) {
-                  Navigator.pushReplacementNamed(context, '/dashboard');
+                  Navigator.pushReplacementNamed(context, '/dashboard', arguments: username);
                 }
               },
               child: Text('Login'),
