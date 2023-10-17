@@ -839,8 +839,7 @@ class _ActivityFormPageState extends State<ActivityFormPage> {
       'glassCarbonTape': glassCarbonTape,
       'topCoat': topCoat,
       'productBatchNo': productBatchNo,
-      'expiryDate': selectedExpiryDate?.toLocal().toString().split(' ')[0] ??
-          '',
+      'expiryDate': selectedExpiryDate?.toLocal().toString().split(' ')[0] ?? '',
       'consumption': consumption,
       'productMixing': productMixing,
       'curingTime': curingTime,

@@ -25,6 +25,7 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     refreshData();
+    print("Refreshed");
   }
 
   @override
@@ -190,6 +191,8 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -222,8 +225,16 @@ class _DashboardState extends State<Dashboard> {
               }
             },
           ),
+          IconButton(
+            icon: Icon(Icons.refresh), // Icon for the refresh button
+            onPressed: () {
+              refreshData();
+              print("called");// Call the refreshData function when the button is pressed
+            },
+          ),
         ],
       ),
+
       body: RefreshIndicator(
         onRefresh: refreshData,
         child: Column(
@@ -259,13 +270,18 @@ class _DashboardState extends State<Dashboard> {
                 // Implement navigation to the "Waiting Approval" page
               },
             ),
-            CardWithCount(
-              title: 'Completed Jobs',
-              count: completedJobsCount,
-              onPressed: () {
-                // Implement navigation to the "Completed Jobs" page
-              },
-            ),
+              CardWithCount(
+                title: 'Completed Jobs',
+                count: completedJobsCount,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CompletedJobsPage(completedJobsList: completedJobsList)
+                      ,
+                    ),
+                  );                },
+              ),
           ],
         ),
       ),
@@ -285,15 +301,7 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
-class CompletedJobData {
-  final String poReference;
-  final Map<String, dynamic> formData;
 
-  CompletedJobData({
-    required this.poReference,
-    required this.formData,
-  });
-}
 
 class WaitingApprovalData {
   final String poReference;
@@ -305,6 +313,7 @@ class WaitingApprovalData {
   });
 }
 
+// template for the card
 class CardWithCount extends StatelessWidget {
   final String title;
   final int count;
@@ -333,6 +342,8 @@ class CardWithCount extends StatelessWidget {
   }
 }
 
+
+// Start of OngoingJobsPage Part
 class OngoingJobsPage extends StatelessWidget {
   final List<OngoingJob> ongoingJobs;
 
@@ -443,6 +454,8 @@ class _OngoingJobTileState extends State<OngoingJobTile> {
     );
   }
 }
+// End of OngoingJobsPage Part
+
 
 class ActivityFormsPage extends StatelessWidget {
   final List<ActivityFormData> activityForms;
@@ -483,6 +496,53 @@ class ActivityFormData {
   final Map<String, dynamic> formData;
 
   ActivityFormData({
+    required this.poReference,
+    required this.formData,
+  });
+}
+
+class CompletedJobsPage extends StatelessWidget {
+  final List<CompletedJobData> completedJobsList;
+
+  CompletedJobsPage({required this.completedJobsList});
+
+  @override
+  Widget build(BuildContext context) {
+    // Implement how you want to display the completed jobs using the completedJobsList
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Completed Jobs'),
+      ),
+      body: ListView.builder(
+        itemCount: completedJobsList.length,
+        itemBuilder: (context, index) {
+          final formData = completedJobsList[index];
+          final poReference = formData.poReference;
+
+          return ListTile(
+            title: Text('$poReference (Completed Job)'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ActivityFormPage(poReference: poReference)
+                ),
+              );
+            }
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+class CompletedJobData {
+  final String poReference;
+  final Map<String, dynamic> formData;
+
+  CompletedJobData({
     required this.poReference,
     required this.formData,
   });
