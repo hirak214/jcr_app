@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pre_work_form.dart';
 import 'activity_form.dart';
+import 'overview.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -526,7 +527,7 @@ class CompletedJobsPage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ActivityFormPage(poReference: poReference)
+                        OverviewPage(poReference: poReference)
                 ),
               );
             }
